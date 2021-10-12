@@ -1,5 +1,4 @@
 package bank;               //defines package-env of the following code
-import java.io.*;
 import bank.Transaction;    //import class from package
 
 

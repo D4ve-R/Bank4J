@@ -1,5 +1,4 @@
 package bank;
-import java.io.*;
 import bank.Transaction;
 
 //Payment Class derived from Transaction Class

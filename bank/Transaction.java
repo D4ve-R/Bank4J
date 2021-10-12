@@ -1,5 +1,4 @@
 package bank;
-import java.io.*;
 
 //SuperClass
 public class Transaction{
@@ -8,7 +7,7 @@ public class Transaction{
     private String description;
 
     //Constructor
-    public Transaction(String date, double amount, String description){
+    protected Transaction(String date, double amount, String description){
         this.date = date;
         this.amount = amount;
         this.description = description;
@@ -17,24 +16,24 @@ public class Transaction{
     /*
     setter & getter methods
      */
-    public void setDate(String date){
+    protected void setDate(String date){
         this.date = date;
     }
-    public void setAmount(double amount){
+    protected void setAmount(double amount){
         this.amount = amount;
     }
-    public void setDescription(String description){
+    protected void setDescription(String description){
         this.description = description;
     }
-    public String getDate(){
+    protected String getDate(){
         return date;
     }
-    public double getAmount(){
+    protected double getAmount(){
         return amount;
     }
-    public String getDescription() { return description; }
+    protected String getDescription() { return description; }
 
-    public void printTransactionData(){
+    protected void printTransactionData(){
         System.out.println("Date: " + date);
         System.out.println("Amount: " + amount);
         System.out.println("Description: " + description);
