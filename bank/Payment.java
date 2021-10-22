@@ -2,9 +2,10 @@ package bank;
 
 /**
  * Payment Class inherits from Transaction Class
+ * implements CalculateBill class , @see CalculateBill
  * @see Transaction
  */
-public class Payment extends Transaction{
+public class Payment extends Transaction implements CalculateBill{
     private double incomingInterest;
     private double outgoingInterest;
 
@@ -95,6 +96,7 @@ public class Payment extends Transaction{
      */
     @Override
     public double calculate(){
+        double amount = getAmount();
         if(amount > 0){
             return amount - (amount * incomingInterest);
         }

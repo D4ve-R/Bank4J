@@ -1,10 +1,9 @@
 package bank;
 
 /**
- * Transaction Class, super class fro Transfer & Payment
- * implements CalculateBill class , @see CalculateBill
+ * Transaction Class, super class for Transfer & Payment
  */
-public class Transaction implements CalculateBill{
+public class Transaction{
     private String date;
     private double amount;
     private String description;
@@ -77,4 +76,5 @@ public class Transaction implements CalculateBill{
         System.out.println("Amount: " + amount);
         System.out.println("Description: " + description);
     }
+
 }

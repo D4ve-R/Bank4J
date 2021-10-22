@@ -1,12 +1,11 @@
 package bank;               //defines package-env of the following code
-import bank.Transaction;    //import class from package
-
 
 /**
  * Transfer Class inherits from super Class Transaction
+ * implements CalculateBill class , @see CalculateBill
  * @see Transaction
  */
-public class Transfer extends Transaction{
+public class Transfer extends Transaction implements CalculateBill{
     private String sender;
     private String recipient;
 
@@ -97,6 +96,6 @@ public class Transfer extends Transaction{
      */
     @Override
     public double calculate(){
-        return amount;
+        return getAmount();
     }
 }
