@@ -11,17 +11,17 @@ public class Main{
     //main
     public static void main(String args[]){
         Payment pay = new Payment("01.01.01", 200.5, "rent");
-        pay.printObj();
-        Payment pay2 = new Payment("02.02.02", 100.9, "power bill", 23.4, 34.5);
-        pay2.printObj();
+        System.out.print(pay);
+        Payment pay2 = new Payment("02.02.02", 100, "power bill", 0.4, 0.1);
+        System.out.print(pay2);
         Payment pay3 = new Payment(pay);
-        pay3.printObj();
+        System.out.print(pay3);
 
         Transfer trans = new Transfer("03.03.03", 200.5, "bla");
-        trans.printObj();
+        System.out.print(trans);
         Transfer trans2 = new Transfer("04.04.04", 100.9, "blabla", "bob", "tim");
-        trans2.printObj();
+        System.out.print(trans2);
         Transfer trans3 = new Transfer(trans2);
-        trans3.printObj();
+        System.out.print(trans3);
     }
 }

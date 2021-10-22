@@ -77,18 +77,6 @@ public class Transfer extends Transaction implements CalculateBill{
     }
 
     /**
-     * prints out Object
-     */
-    public void printObj(){
-        System.out.println("{");
-        printTransactionData();
-        System.out.println("Sender: " + sender);
-        System.out.println("Recipient: " + recipient);
-        System.out.println("}");
-    }
-
-
-    /**
      * calculate interest
      * overwritten from CalculateBill Class
      * @see CalculateBill
@@ -97,5 +85,17 @@ public class Transfer extends Transaction implements CalculateBill{
     @Override
     public double calculate(){
         return getAmount();
+    }
+
+    /**
+     * transfers an Object to a String
+     * overwriting Object.toString()
+     * @return s Object as String
+     */
+    @Override
+    public String toString(){
+        String s = "{ \n" + super.toString();
+        s += "Sender: " + sender + "\n" + "Recipient: " + recipient + "\n} \n";
+        return s;
     }
 }

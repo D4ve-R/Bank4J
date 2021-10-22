@@ -69,12 +69,14 @@ public class Transaction{
     }
 
     /**
-     * prints Transaction Data
+     * transfers an Object to a String
+     * overwriting Object.toString()
+     * @return s Object as String
      */
-    protected void printTransactionData(){
-        System.out.println("Date: " + date);
-        System.out.println("Amount: " + amount);
-        System.out.println("Description: " + description);
+    @Override
+    public String toString(){
+        String s = "Date: " + date + "\n" + "Amount: " + amount + "\n" + "Description: " + description + "\n";
+        return s;
     }
 
 }

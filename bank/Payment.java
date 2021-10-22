@@ -77,18 +77,6 @@ public class Payment extends Transaction implements CalculateBill{
     }
 
     /**
-     * Print Payment Object, calls printTransactionData
-     * @see printTransactionData()
-     */
-    public void printObj(){
-        System.out.println("{");
-        super.printTransactionData();
-        System.out.println("IncomingInterest: " + incomingInterest);
-        System.out.println("OutgoingInterest: " + outgoingInterest);
-        System.out.println("}");
-    }
-
-    /**
      * calculate interest
      * overwritten from CalculateBill Class
      * @see CalculateBill
@@ -103,5 +91,17 @@ public class Payment extends Transaction implements CalculateBill{
         else{
             return amount - (amount * outgoingInterest);
         }
+    }
+
+    /**
+     * transfers an Object to a String
+     * overwriting Object.toString()
+     * @return s Object as String
+     */
+    @Override
+    public String toString(){
+        String s = "{ \n" + super.toString();
+        s += "IncomingInterest: " + incomingInterest + "\n" + "OutgoingInterest: " + outgoingInterest + "\n{ \n";
+        return s;
     }
 }
