@@ -8,6 +8,7 @@ David Rechkemmer
 import bank.*;
 
 public class Main{
+
     //main
     public static void main(String args[]){
         Payment pay = new Payment("01.01.01", 200.5, "rent");
@@ -23,5 +24,11 @@ public class Main{
         System.out.print(trans2);
         Transfer trans3 = new Transfer(trans2);
         System.out.print(trans3);
+
+        if(trans3.equals(trans2)) System.out.println("Equal");
+        else System.out.println("Not equal");
+
+        if(trans.equals(trans2)) System.out.println("Equal");
+        else System.out.println("Not equal");
     }
 }

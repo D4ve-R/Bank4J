@@ -79,4 +79,11 @@ public class Transaction{
         return s;
     }
 
+    public boolean equals(Transaction o){
+        if(o.getAmount() == getAmount() && o.getDate() == getDate() && o.getDescription() == getDescription())
+            return true;
+        else
+            return false;
+    }
+
 }

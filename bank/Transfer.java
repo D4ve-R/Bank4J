@@ -94,8 +94,16 @@ public class Transfer extends Transaction implements CalculateBill{
      */
     @Override
     public String toString(){
+        setAmount(calculate());
         String s = "{ \n" + super.toString();
         s += "Sender: " + sender + "\n" + "Recipient: " + recipient + "\n} \n";
         return s;
+    }
+
+    public boolean equals(Transfer o){
+        if(super.equals(o) && o.getSender() == getSender() && o.getRecipient() == getRecipient())
+            return true;
+        else
+            return false;
     }
 }

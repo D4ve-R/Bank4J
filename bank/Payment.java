@@ -100,8 +100,16 @@ public class Payment extends Transaction implements CalculateBill{
      */
     @Override
     public String toString(){
+        setAmount(calculate());
         String s = "{ \n" + super.toString();
         s += "IncomingInterest: " + incomingInterest + "\n" + "OutgoingInterest: " + outgoingInterest + "\n{ \n";
         return s;
+    }
+
+    public boolean equals(Payment o){
+        if(super.equals(o) && o.getIncomingInterest() == getIncomingInterest() && o.getOutgoingInterest() == getOutgoingInterest())
+            return true;
+        else
+            return false;
     }
 }
