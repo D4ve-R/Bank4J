@@ -76,16 +76,6 @@ public class Transfer extends Transaction implements CalculateBill{
         return recipient;
     }
 
-    /**
-     * calculate interest
-     * overwritten from CalculateBill Class
-     * @see CalculateBill
-     * @return amount
-     */
-    @Override
-    public double calculate(){
-        return getAmount();
-    }
 
     /**
      * transfers an Object to a String
@@ -94,16 +84,20 @@ public class Transfer extends Transaction implements CalculateBill{
      */
     @Override
     public String toString(){
-        setAmount(calculate());
-        String s = "{ \n" + super.toString();
-        s += "Sender: " + sender + "\n" + "Recipient: " + recipient + "\n} \n";
-        return s;
+        return "{ \n" + super.toString() + "Sender: " + sender + "\n" + "Recipient: " + recipient + "\n} \n";
     }
 
-    public boolean equals(Transfer o){
-        if(super.equals(o) && o.getSender() == getSender() && o.getRecipient() == getRecipient())
-            return true;
-        else
-            return false;
+    /**
+     * check if obj is the same as Object method is called on
+     * @see Object
+     * @param obj Object
+     * @return  boolean
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(obj == this) return true;
+        if(!(obj instanceof Transfer)) return false;
+        Transfer objT = (Transfer) obj;
+        return super.equals(objT) && objT.getSender() == sender && objT.getRecipient() == recipient;
     }
 }

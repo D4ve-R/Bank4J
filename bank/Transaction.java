@@ -3,7 +3,7 @@ package bank;
 /**
  * Transaction Class, super class for Transfer & Payment
  */
-public class Transaction{
+public class Transaction implements CalculateBill{
     private String date;
     private double amount;
     private String description;
@@ -69,21 +69,36 @@ public class Transaction{
     }
 
     /**
+     * calculate method from CalcuclateBill
+     * @see CalculateBill
+     * @return double calculated Amount
+     */
+    public double calculate(){
+        return amount;
+    }
+
+    /**
      * transfers an Object to a String
      * overwriting Object.toString()
      * @return s Object as String
      */
     @Override
     public String toString(){
-        String s = "Date: " + date + "\n" + "Amount: " + amount + "\n" + "Description: " + description + "\n";
-        return s;
+        return "Date: " + date + "\n" + "Amount: " + calculate() + "\n" + "Description: " + description + "\n";
     }
 
-    public boolean equals(Transaction o){
-        if(o.getAmount() == getAmount() && o.getDate() == getDate() && o.getDescription() == getDescription())
-            return true;
-        else
-            return false;
+
+    /**
+     * check if obj is the same as Object method is called on
+     * @param obj Object
+     * @return  boolean
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(obj == this) return true;
+        if(!(obj instanceof Transaction)) return false;
+        Transaction objT = (Transaction) obj;
+        return objT.getDate() == date && objT.getAmount() == amount && objT.getDescription() == description;
     }
 
 }
