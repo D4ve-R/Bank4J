@@ -5,7 +5,7 @@ package bank;
  * implements CalculateBill class , @see CalculateBill
  * @see Transaction
  */
-public class Payment extends Transaction implements CalculateBill{
+public class Payment extends Transaction{
     private double incomingInterest;
     private double outgoingInterest;
 
