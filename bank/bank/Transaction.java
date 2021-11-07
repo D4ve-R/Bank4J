@@ -3,7 +3,7 @@ package bank;
 /**
  * Transaction Class, super class for Transfer & Payment
  */
-public class Transaction implements CalculateBill{
+public abstract class Transaction implements CalculateBill{
     private String date;
     private double amount;
     private String description;
