@@ -48,7 +48,7 @@ public class Transfer extends Transaction implements CalculateBill{
      * set Sender of Transfer
      * @param sender Sender of Transfer
      */
-    public void setSender(String sender){
+    protected void setSender(String sender){
         this.sender = sender;
     }
 
@@ -56,7 +56,7 @@ public class Transfer extends Transaction implements CalculateBill{
      * set Recipient
      * @param recipient
      */
-    public void setRecipient(String recipient){
+    protected void setRecipient(String recipient){
         this.recipient = recipient;
     }
 

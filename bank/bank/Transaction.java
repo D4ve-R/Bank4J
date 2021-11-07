@@ -14,7 +14,7 @@ public abstract class Transaction implements CalculateBill{
      * @param amount Amount of Transaction
      * @param description Description
      */
-    protected Transaction(String date, double amount, String description){
+    public Transaction(String date, double amount, String description){
         this.date = date;
         this.amount = amount;
         this.description = description;
@@ -48,7 +48,7 @@ public abstract class Transaction implements CalculateBill{
      * get Date of Transaction
      * @return date
      */
-    protected String getDate(){
+    public String getDate(){
         return date;
     }
 
@@ -56,7 +56,7 @@ public abstract class Transaction implements CalculateBill{
      * get Amount of Transaction
      * @return amount
      */
-    protected double getAmount(){
+    public double getAmount(){
         return amount;
     }
 
@@ -64,7 +64,7 @@ public abstract class Transaction implements CalculateBill{
      * get Description of Transaction
      * @return description
      */
-    protected String getDescription(){
+    public String getDescription(){
         return description;
     }
 

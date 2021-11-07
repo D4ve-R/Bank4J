@@ -48,7 +48,7 @@ public class Payment extends Transaction{
      * sets incomingInterest
      * @param in Interest
      */
-    public void setIncomingInterest(double in){
+    protected void setIncomingInterest(double in){
         incomingInterest = in;
     }
 
@@ -56,7 +56,7 @@ public class Payment extends Transaction{
      * sets outgoingInterest
      * @param out Interest
      */
-    public void setOutgoingInterest(double out){
+    protected void setOutgoingInterest(double out){
         outgoingInterest = out;
     }
 
@@ -78,7 +78,7 @@ public class Payment extends Transaction{
 
     /**
      * calculate interest
-     * overwritten from CalculateBill Class
+     * overwritten from CalculateBill Interface
      * @see CalculateBill
      * @return double calculated Amount
      */
@@ -100,7 +100,7 @@ public class Payment extends Transaction{
      */
     @Override
     public String toString(){
-        return "{ \n" + super.toString() + "IncomingInterest: " + incomingInterest + "\n" + "OutgoingInterest: " + outgoingInterest + "\n{ \n";
+        return "{ \n" + super.toString() + "IncomingInterest: " + incomingInterest + "\n" + "OutgoingInterest: " + outgoingInterest + "\n}\n";
     }
 
     /**
