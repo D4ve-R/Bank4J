@@ -5,7 +5,7 @@ package bank;
  * implements CalculateBill class , @see CalculateBill
  * @see Transaction
  */
-public class Payment extends Transaction implements CalculateBill{
+public class Payment extends Transaction{
     private double incomingInterest;
     private double outgoingInterest;
 
@@ -80,7 +80,7 @@ public class Payment extends Transaction implements CalculateBill{
      * calculate interest
      * overwritten from CalculateBill Class
      * @see CalculateBill
-     * @return amount
+     * @return double calculated Amount
      */
     @Override
     public double calculate(){
@@ -100,16 +100,19 @@ public class Payment extends Transaction implements CalculateBill{
      */
     @Override
     public String toString(){
-        setAmount(calculate());
-        String s = "{ \n" + super.toString();
-        s += "IncomingInterest: " + incomingInterest + "\n" + "OutgoingInterest: " + outgoingInterest + "\n{ \n";
-        return s;
+        return "{ \n" + super.toString() + "IncomingInterest: " + incomingInterest + "\n" + "OutgoingInterest: " + outgoingInterest + "\n{ \n";
     }
 
-    public boolean equals(Payment o){
-        if(super.equals(o) && o.getIncomingInterest() == getIncomingInterest() && o.getOutgoingInterest() == getOutgoingInterest())
-            return true;
-        else
-            return false;
+    /**
+     * check if obj is the same as Object method is called on
+     * @param obj Object
+     * @return  boolean
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(obj == this) return true;
+        if(!(obj instanceof Payment)) return false;
+        Payment objP = (Payment) obj;
+        return super.equals(objP) && objP.getIncomingInterest() == incomingInterest && objP.getOutgoingInterest() == outgoingInterest;
     }
 }
