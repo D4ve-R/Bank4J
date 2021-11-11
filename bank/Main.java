@@ -33,5 +33,16 @@ public class Main{
             System.out.println("Equal");
         else
             System.out.println("Not equal");
+
+
+        // Prak 3
+
+        PrivateBank pb = new PrivateBank("test", 0.05, 0.07);
+        PrivateBank pb2 = new PrivateBank("test", 0.05, 0.07);
+        if(pb.equals(pb2)){
+            System.out.println("Banks are Equal");
+        }
+        System.out.println(pb);
+        System.out.println(pb2);
     }
 }

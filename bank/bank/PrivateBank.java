@@ -201,9 +201,9 @@ public class PrivateBank implements Bank{
     @Override
     public boolean equals(Object obj){
         if(obj == this) return true;
-        if(!(obj instanceof Bank)) return false;
+        if(!(obj instanceof PrivateBank)) return false;
         PrivateBank other = (PrivateBank) obj;
-        return name == other.getName() && incomingInterest == other.getIncomingInterest() && outgoingInterest == other.getOutgoingInterest() && accountsToTransactions == other.getAccounts();
+        return name == other.getName() && incomingInterest == other.getIncomingInterest() && outgoingInterest == other.getOutgoingInterest() && accountsToTransactions.equals(other.getAccounts());
     }
 
     class CustomComparator implements Comparator<Transaction> {
