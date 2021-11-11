@@ -89,7 +89,7 @@ public class Payment extends Transaction{
             return amount - (amount * incomingInterest);
         }
         else{
-            return amount - (amount * outgoingInterest);
+            return amount + (amount * outgoingInterest);
         }
     }
 
@@ -100,7 +100,7 @@ public class Payment extends Transaction{
      */
     @Override
     public String toString(){
-        return "{ \n" + super.toString() + "IncomingInterest: " + incomingInterest + "\n" + "OutgoingInterest: " + outgoingInterest + "\n}\n";
+        return "Payment: { \n" + super.toString() + " IncomingInterest: " + incomingInterest + "\n OutgoingInterest: " + outgoingInterest + "\n}\n";
     }
 
     /**

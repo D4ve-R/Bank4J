@@ -3,6 +3,10 @@ package bank;
 import java.util.*;
 import bank.exceptions.*;
 
+/**
+ * Class for a generic bank. Implements Bank Interface.
+ * Handles interests, accounts and associated transactions
+ */
 public class PrivateBank implements Bank{
     private String name;
     private double incomingInterest;
@@ -68,6 +72,14 @@ public class PrivateBank implements Bank{
      */
     public void setOutgoingInterest(double out) { outgoingInterest = out;}
 
+    /**
+     * getAccounts returns the accountsToTransaction Hashmap of Bank obj
+     * @return accountsToTransactions
+     */
+    public Map<String, List<Transaction>> getAccounts(){
+        return accountsToTransactions;
+    }
+
     @Override
     public void createAccount(String account) throws AccountAlreadyExistsException {
         if(accountsToTransactions.containsKey(account)){
@@ -132,7 +144,28 @@ public class PrivateBank implements Bank{
 
     @Override
     public double getAccountBalance(String account) {
-        return 0;
+        double sum = 0;
+        for(Transaction t : getTransactions(account)){
+            sum += t.calculate();
+        }
+        /*
+        for(Object t : accountsToTransactions.get(account)){
+            if(t instanceof Transfer){
+                Transfer tf = (Transfer) t;
+                if(tf.getSender() == account){
+                   sum -= tf.calculate();
+                }
+                else{
+                    sum += tf.calculate();
+                }
+            }
+            else{
+                Transaction ts = (Transaction) t;
+                sum += ts.calculate();
+            }
+        }
+        */
+        return sum;
     }
 
     @Override
@@ -142,21 +175,41 @@ public class PrivateBank implements Bank{
 
     @Override
     public List<Transaction> getTransactionsSorted(String account, boolean asc) {
-        return accountsToTransactions.get(account);
+        List<Transaction> list = getTransactions(account);
+        Collections.sort(list, (t1,t2)->{return (int)(t1.getAmount() - t2.getAmount());} );
+        if(!asc) Collections.reverse(list);
+        return list;
     }
 
     @Override
     public List<Transaction> getTransactionsByType(String account, boolean positive) {
-        return null;
+        List<Transaction> list = getTransactions(account);
+        if(positive){
+            list.removeIf(t -> t.getAmount() < 0);
+        }
+        else {
+            list.removeIf(t -> t.getAmount() >= 0);
+        }
+        return list;
     }
 
     @Override
     public String toString(){
-        return "Bank: { \n Name: " + name + "\nIncomingInterest: " + incomingInterest + "\nOutgoingInterest: " + outgoingInterest + "\nCustomers: " + accountsToTransactions.size() + "}\n";
+        return "Bank: { \n Name: " + name + "\n IncomingInterest: " + incomingInterest + "\n OutgoingInterest: " + outgoingInterest + "\n Customers: " + accountsToTransactions.size() + "\n}\n";
     }
 
     @Override
     public boolean equals(Object obj){
-        return true;
+        if(obj == this) return true;
+        if(!(obj instanceof Bank)) return false;
+        PrivateBank other = (PrivateBank) obj;
+        return name == other.getName() && incomingInterest == other.getIncomingInterest() && outgoingInterest == other.getOutgoingInterest() && accountsToTransactions == other.getAccounts();
+    }
+
+    class CustomComparator implements Comparator<Transaction> {
+        @Override
+        public int compare(Transaction t1, Transaction t2) {
+            return (int)(t1.getAmount() - t2.getAmount());
+        }
     }
 }
