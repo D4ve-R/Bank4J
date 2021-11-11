@@ -1,3 +1,8 @@
+/**
+ * OOS Praktikum
+ * David Rechkemmer
+ */
+
 package bank;
 
 import java.util.*;
@@ -204,12 +209,5 @@ public class PrivateBank implements Bank{
         if(!(obj instanceof PrivateBank)) return false;
         PrivateBank other = (PrivateBank) obj;
         return name == other.getName() && incomingInterest == other.getIncomingInterest() && outgoingInterest == other.getOutgoingInterest() && accountsToTransactions.equals(other.getAccounts());
-    }
-
-    class CustomComparator implements Comparator<Transaction> {
-        @Override
-        public int compare(Transaction t1, Transaction t2) {
-            return (int)(t1.getAmount() - t2.getAmount());
-        }
     }
 }

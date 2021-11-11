@@ -1,3 +1,8 @@
+/**
+ * OOS Praktikum
+ * David Rechkemmer
+ */
+
 package bank;
 
 /**

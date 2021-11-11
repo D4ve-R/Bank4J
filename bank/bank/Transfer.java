@@ -1,3 +1,8 @@
+/**
+ * OOS Praktikum
+ * David Rechkemmer
+ */
+
 package bank;               //defines package-env of the following code
 
 /**

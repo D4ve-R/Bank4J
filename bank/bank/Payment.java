@@ -1,3 +1,8 @@
+/**
+ * OOS Praktikum
+ * David Rechkemmer
+ */
+
 package bank;
 
 /**
@@ -113,6 +118,6 @@ public class Payment extends Transaction{
         if(obj == this) return true;
         if(!(obj instanceof Payment)) return false;
         Payment objP = (Payment) obj;
-        return super.equals(objP) && objP.getIncomingInterest() == incomingInterest && objP.getOutgoingInterest() == outgoingInterest;
+        return super.equals(objP) && (objP.getIncomingInterest() == incomingInterest && objP.getOutgoingInterest() == outgoingInterest);
     }
 }
