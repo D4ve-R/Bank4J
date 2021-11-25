@@ -5,7 +5,7 @@
 
 package oos.bank.exceptions;
 
-import oos.bank.Transaction;
+import oos.bank.transactions.Transaction;
 
 public class TransactionAlreadyExistException extends Exception{
     public TransactionAlreadyExistException(Transaction t){

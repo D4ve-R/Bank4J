@@ -1,0 +1,20 @@
+[
+  {
+    "CLASSNAME": "oos.bank.transactions.Transfer",
+    "INSTANCE": {
+      "date": "03.03.03",
+      "amount": 200.5,
+      "description": "bla"
+    }
+  },
+  {
+    "CLASSNAME": "oos.bank.transactions.Payment",
+    "INSTANCE": {
+      "incomingInterest": 0.0,
+      "outgoingInterest": 0.0,
+      "date": "01.01.01",
+      "amount": 200.5,
+      "description": "rent"
+    }
+  }
+]

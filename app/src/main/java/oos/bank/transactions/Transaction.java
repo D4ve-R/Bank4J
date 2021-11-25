@@ -3,12 +3,14 @@
  * David Rechkemmer
  */
 
-package oos.bank;
+package oos.bank.transactions;
+
+import oos.bank.CalculateBill;
 
 /**
  * Transaction Class
  */
-public abstract class Transaction implements CalculateBill{
+public abstract class Transaction implements CalculateBill {
     private String date;
     private double amount;
     private String description;

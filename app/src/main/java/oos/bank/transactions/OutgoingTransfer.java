@@ -3,13 +3,13 @@
  * David Rechkemmer
  */
 
-package oos.bank;
+package oos.bank.transactions;
 
 /**
  * OutgoingTransfer class handles all outgoing Transfer
  * inherits from Transfer
  */
-public class OutgoingTransfer extends Transfer{
+public class OutgoingTransfer extends Transfer {
 
     /**
      * Constructor for OutgoingTransfer

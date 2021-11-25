@@ -3,7 +3,9 @@
  * David Rechkemmer
  */
 
-package oos.bank;
+package oos.bank.transactions;
+
+import oos.bank.CalculateBill;
 
 /**
  * Payment Class inherits from Transaction Class
@@ -53,7 +55,7 @@ public class Payment extends Transaction{
      * sets incomingInterest
      * @param in Interest
      */
-    protected void setIncomingInterest(double in){
+    public void setIncomingInterest(double in){
         incomingInterest = in;
     }
 
@@ -61,7 +63,7 @@ public class Payment extends Transaction{
      * sets outgoingInterest
      * @param out Interest
      */
-    protected void setOutgoingInterest(double out){
+    public void setOutgoingInterest(double out){
         outgoingInterest = out;
     }
 

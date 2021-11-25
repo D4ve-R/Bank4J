@@ -6,7 +6,8 @@
 package oos.bank;
 
 import java.util.List;
-import oos.exceptions.*;
+import oos.bank.exceptions.*;
+import oos.bank.transactions.Transaction;
 
 /**
  * Interface for a generic bank. Provides multiple methods to handle the interaction between

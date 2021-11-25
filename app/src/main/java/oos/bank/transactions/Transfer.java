@@ -3,14 +3,16 @@
  * David Rechkemmer
  */
 
-package oos.bank;               //defines package-env of the following code
+package oos.bank.transactions;               //defines package-env of the following code
+
+import oos.bank.CalculateBill;
 
 /**
  * Transfer Class inherits from super Class Transaction
  * implements CalculateBill class , @see CalculateBill
  * @see Transaction
  */
-public class Transfer extends Transaction implements CalculateBill{
+public class Transfer extends Transaction implements CalculateBill {
     private String sender;
     private String recipient;
 

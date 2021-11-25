@@ -5,8 +5,18 @@
 
 package oos.bank;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.lang.reflect.Type;
 import java.util.*;
-import oos.exceptions.*;
+import java.io.IOException;
+import com.google.gson.*;
+
+import com.google.gson.reflect.TypeToken;
+import oos.bank.exceptions.*;
+import oos.bank.transactions.*;
 
 /**
  * Class for a generic bank. Implements Bank Interface.
@@ -17,6 +27,7 @@ public class PrivateBank implements Bank{
     private double incomingInterest;
     private double outgoingInterest;
     private Map<String, List<Transaction>> accountsToTransactions = new HashMap<String, List<Transaction>>();
+    private String directoryName;
 
     /**
      * PrivateBank Constructor initialize name and interests
@@ -24,10 +35,11 @@ public class PrivateBank implements Bank{
      * @param in incomingInterest
      * @param out outgoingInterest
      */
-    public PrivateBank(String name, double in, double out){
+    public PrivateBank(String name, double in, double out, String directoryName){
         this.name = name;
         outgoingInterest = out;
         incomingInterest = in;
+        this.directoryName = directoryName;
     }
 
     /**
@@ -83,6 +95,47 @@ public class PrivateBank implements Bank{
      */
     public Map<String, List<Transaction>> getAccounts(){
         return accountsToTransactions;
+    }
+
+    /**
+     * readAccounts() reads all persistent stored accounts from filesystem
+     * @throws IOException
+     */
+    public void readAccounts() throws IOException {
+        Path fileName = Path.of("Accounts/KontoDave.json");
+        String json = Files.readString(fileName);
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Transaction.class, new CustomDeserializer())
+                .create();
+
+        Transaction[] tArr = gson.fromJson(json, Transaction[].class);
+        List<Transaction> list = Arrays.asList(tArr);
+        System.out.println(list);
+        try {
+            createAccount("Dave", list);
+        }catch(AccountAlreadyExistsException e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * writeAccounts() writes all transactions from account to filesystem
+     * filename = Konto<Account>.json
+     * uses directoryName attribute to specify location in filesystem
+     * @param account to be stored persistent
+     * @throws IOException
+     */
+    public void writeAccounts(String account) throws IOException {
+        Gson gson = new GsonBuilder()
+                .registerTypeHierarchyAdapter(Transaction.class, new CustomSerializer())
+                .setPrettyPrinting()
+                .create();
+
+        String accountName = account.substring(0,1).toUpperCase() + account.substring(1);
+        Writer writer = new FileWriter(   directoryName + "/" + "Konto" + accountName + ".json");
+        gson.toJson(getTransactions(account), writer);
+        writer.flush();
+        writer.close();
     }
 
     @Override
@@ -209,5 +262,49 @@ public class PrivateBank implements Bank{
         if(!(obj instanceof PrivateBank)) return false;
         PrivateBank other = (PrivateBank) obj;
         return name == other.getName() && incomingInterest == other.getIncomingInterest() && outgoingInterest == other.getOutgoingInterest() && accountsToTransactions.equals(other.getAccounts());
+    }
+
+    /**
+     * CustomSerializer Class implements JsonSerializer
+     * handles serialization of Transaction Class
+     */
+    public static class CustomSerializer implements JsonSerializer<Transaction> {
+
+        @Override
+        public JsonElement serialize(Transaction src, Type typeOfSrc, JsonSerializationContext context) {
+            Gson gson = new Gson();
+            JsonElement el = gson.toJsonTree(src, typeOfSrc);
+            JsonObject obj = new JsonObject();
+            obj.addProperty("CLASSNAME", src.getClass().getSimpleName());
+            obj.add("INSTANCE", el);
+            return obj;
+        }
+    }
+
+    /**
+     * CustomDeserializer implements JsonDeserializer
+     * handles deserialization of Transaction Class
+     */
+    public static class CustomDeserializer implements JsonDeserializer<Transaction> {
+
+        @Override
+        public Transaction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject obj = json.getAsJsonObject();
+            JsonPrimitive p = (JsonPrimitive) obj.get("CLASSNAME");
+            String className = p.getAsString();
+            System.out.println(className);
+            switch(className) {
+                case "Payment":
+                    return context.deserialize(obj.get("INSTANCE"), Payment.class);
+                case "IncomingTransfer":
+                    return context.deserialize(obj.get("INSTANCE"), IncomingTransfer.class);
+                case "OutgoingTransfer":
+                    return context.deserialize(obj.get("INSTANCE"), OutgoingTransfer.class);
+                case "Transfer":
+                    return context.deserialize(obj.get("INSTANCE"), Transfer.class);
+                default:
+                    return null;
+            }
+        }
     }
 }

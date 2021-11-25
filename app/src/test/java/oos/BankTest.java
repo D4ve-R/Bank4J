@@ -6,6 +6,10 @@ package oos;
 
 import oos.bank.*;
 import oos.bank.exceptions.*;
+import oos.bank.transactions.IncomingTransfer;
+import oos.bank.transactions.OutgoingTransfer;
+import oos.bank.transactions.Payment;
+import oos.bank.transactions.Transfer;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +27,7 @@ public class BankTest {
     static IncomingTransfer it = new IncomingTransfer(trans2);
     static OutgoingTransfer ot = new OutgoingTransfer(trans);
 
-    static PrivateBank pb = new PrivateBank("myBank", 0.05, 0.1);
+    static PrivateBank pb = new PrivateBank("myBank", 0.05, 0.1,"");
 
     @DisplayName("initialize")
     @BeforeAll
@@ -201,20 +205,7 @@ public class BankTest {
                 );
             }
 
-            @DisplayName("Test getAccountBalance")
-            @Test
-            void testGetAccountBalance(){
-                try{
-                    pb.createAccount("hans");
-                    pb.addTransaction("hans", pay4);    //95
-                    pb.addTransaction("hans",pay5);     //95
-                    pb.addTransaction("hans", it);      //95
-                    pb.addTransaction("hans", ot);      //-180
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                assertEquals(465, pb.getAccountBalance("hans"));
-            }
+
 
 
         }
