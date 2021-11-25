@@ -88,15 +88,15 @@ public class Payment extends Transaction{
      * @return double calculated Amount
      */
     @Override
-    public double calculate(){
+    public double calculate() {
         double amount = getAmount();
-        if(amount > 0){
+        if (amount > 0) {
             return amount - (amount * incomingInterest);
-        }
-        else{
+        } else {
             return amount + (amount * outgoingInterest);
         }
     }
+
 
     /**
      * transfers an Object to a String

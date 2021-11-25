@@ -5,26 +5,26 @@
 
 package bank;
 
+/**
+ * OutgoingTransfer class handles all outgoing Transfer
+ * inherits from Transfer
+ */
 public class OutgoingTransfer extends Transfer{
-    private double outgoingInterest;
 
-    public OutgoingTransfer(String date, double amount, String descrp, double interest) {
-        super(date, amount, descrp);
-        outgoingInterest = interest;
-    }
-
-    public OutgoingTransfer(String date, double amount, String descrp, String sender, String recipient, double interest) {
-        super(date, amount, descrp, sender, recipient);
-        outgoingInterest = interest;
-    }
-
-    public OutgoingTransfer(Transfer trans, double interest) {
+    /**
+     * Constructor for OutgoingTransfer
+     * @param trans Transfer Object
+     */
+    public OutgoingTransfer(Transfer trans) {
         super(trans);
-        outgoingInterest = interest;
     }
 
+    /**
+     * overwritten from Transfer
+     * @return negative Amount
+     */
     @Override
     public double calculate(){
-        return super.calculate() * (1 - outgoingInterest);
+        return (-1 * super.calculate());
     }
 }

@@ -103,6 +103,6 @@ public class Transfer extends Transaction implements CalculateBill{
         if(obj == this) return true;
         if(!(obj instanceof Transfer)) return false;
         Transfer objT = (Transfer) obj;
-        return super.equals(objT) && objT.getSender() == sender && objT.getRecipient() == recipient;
+        return super.equals(objT) && objT.getSender().equals(sender) && objT.getRecipient().equals(recipient);
     }
 }

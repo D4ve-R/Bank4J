@@ -6,7 +6,7 @@
 package bank;
 
 /**
- * Transaction Class, super class for Transfer & Payment
+ * Transaction Class
  */
 public abstract class Transaction implements CalculateBill{
     private String date;
@@ -92,7 +92,6 @@ public abstract class Transaction implements CalculateBill{
         return "Date: " + date + "\n" + "Amount: " + calculate() + "\n" + "Description: " + description + "\n";
     }
 
-
     /**
      * check if obj is the same as Object method is called on
      * @param obj Object
@@ -103,7 +102,7 @@ public abstract class Transaction implements CalculateBill{
         if(obj == this) return true;
         if(!(obj instanceof Transaction)) return false;
         Transaction objT = (Transaction) obj;
-        return objT.getDate() == date && objT.getAmount() == amount && objT.getDescription() == description;
+        return objT.getDate().equals(date) && objT.getAmount() == amount && objT.getDescription().equals(description);
     }
 
 }

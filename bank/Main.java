@@ -30,14 +30,14 @@ public class Main{
         System.out.print(trans3);
 
         if(trans3.equals(trans2))
-            System.out.println("Equal");
+            System.out.println("Test succesful");
         else
             System.out.println("Not equal");
 
         if(trans.equals(trans2))
             System.out.println("Equal");
         else
-            System.out.println("Not equal");
+            System.out.println("Test successful");
 
 
         // Prak 3

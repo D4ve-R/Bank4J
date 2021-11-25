@@ -19,8 +19,8 @@ public class BankTest {
     static Transfer trans = new Transfer("03.03.03", 200, "bla");
     static Transfer trans2 = new Transfer("04.04.04", 100, "blabla", "bob", "tim");
     static Transfer trans3;
-    static IncomingTransfer it = new IncomingTransfer(trans2, 0.05);
-    static OutgoingTransfer ot = new OutgoingTransfer(trans, 0.1);
+    static IncomingTransfer it = new IncomingTransfer(trans2);
+    static OutgoingTransfer ot = new OutgoingTransfer(trans);
 
     static PrivateBank pb = new PrivateBank("myBank", 0.05, 0.1);
 
@@ -138,8 +138,8 @@ public class BankTest {
         @Test
         void testCalculateIOTransfers(){
             assertAll("test calculate()",
-                    ()-> assertEquals(95, it.calculate()),
-                    ()-> assertEquals(180, ot.calculate())
+                    ()-> assertEquals(100, it.calculate()),
+                    ()-> assertEquals(-200, ot.calculate())
             );
         }
 
@@ -208,7 +208,7 @@ public class BankTest {
                     pb.addTransaction("hans", pay4);    //95
                     pb.addTransaction("hans",pay5);     //95
                     pb.addTransaction("hans", it);      //95
-                    pb.addTransaction("hans", ot);      //180
+                    pb.addTransaction("hans", ot);      //-180
                 }catch(Exception e){
                     e.printStackTrace();
                 }
