@@ -3,7 +3,7 @@
  * David Rechkemmer
  */
 
-package bank.exceptions;
+package oos.bank.exceptions;
 
 public class AccountDoesNotExistException extends Exception{
     public AccountDoesNotExistException(String account){

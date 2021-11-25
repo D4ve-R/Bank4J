@@ -3,7 +3,7 @@
  * David Rechkemmer
  */
 
-package bank;
+package oos.bank;
 
 public interface CalculateBill{
     double calculate();

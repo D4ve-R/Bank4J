@@ -3,10 +3,10 @@
  * David Rechkemmer
  */
 
-package bank;
+package oos.bank;
 
 import java.util.*;
-import bank.exceptions.*;
+import oos.exceptions.*;
 
 /**
  * Class for a generic bank. Implements Bank Interface.

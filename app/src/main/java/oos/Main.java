@@ -2,8 +2,9 @@
  * OOS Praktikum
  * David Rechkemmer
  */
+package oos;
 
-import bank.*;
+import oos.bank.*;
 
 /**
  * Main Class

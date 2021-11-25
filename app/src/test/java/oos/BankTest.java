@@ -2,12 +2,13 @@
  * OOS Praktikum
  * David Rechkemmer
  */
+package oos;
 
+import oos.bank.*;
+import oos.bank.exceptions.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import bank.*;
-import bank.exceptions.*;
 
 
 public class BankTest {

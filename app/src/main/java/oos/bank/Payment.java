@@ -3,7 +3,7 @@
  * David Rechkemmer
  */
 
-package bank;
+package oos.bank;
 
 /**
  * Payment Class inherits from Transaction Class

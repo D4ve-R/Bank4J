@@ -3,7 +3,7 @@
  * David Rechkemmer
  */
 
-package bank;               //defines package-env of the following code
+package oos.bank;               //defines package-env of the following code
 
 /**
  * Transfer Class inherits from super Class Transaction

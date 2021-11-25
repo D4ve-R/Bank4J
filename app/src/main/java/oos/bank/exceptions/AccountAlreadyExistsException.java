@@ -3,7 +3,7 @@
  * David Rechkemmer
  */
 
-package bank.exceptions;
+package oos.bank.exceptions;
 
 public class AccountAlreadyExistsException extends Exception {
     public AccountAlreadyExistsException(String account){

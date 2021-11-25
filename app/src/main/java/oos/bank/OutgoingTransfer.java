@@ -3,7 +3,7 @@
  * David Rechkemmer
  */
 
-package bank;
+package oos.bank;
 
 /**
  * OutgoingTransfer class handles all outgoing Transfer
