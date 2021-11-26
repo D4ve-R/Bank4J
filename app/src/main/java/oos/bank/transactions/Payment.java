@@ -95,7 +95,7 @@ public class Payment extends Transaction{
         if (amount > 0) {
             return amount - (amount * incomingInterest);
         } else {
-            return amount + (amount * outgoingInterest);
+            return amount - (amount * outgoingInterest);
         }
     }
 

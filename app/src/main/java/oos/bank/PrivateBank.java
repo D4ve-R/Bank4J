@@ -10,11 +10,16 @@ import java.nio.file.Path;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.io.IOException;
 import com.google.gson.*;
 
-import com.google.gson.reflect.TypeToken;
 import oos.bank.exceptions.*;
 import oos.bank.transactions.*;
 
@@ -40,6 +45,14 @@ public class PrivateBank implements Bank{
         outgoingInterest = out;
         incomingInterest = in;
         this.directoryName = directoryName;
+
+
+        try {
+            readAccounts();
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -51,6 +64,7 @@ public class PrivateBank implements Bank{
         name = bank.getName();
         incomingInterest = bank.getIncomingInterest();
         outgoingInterest = bank.getOutgoingInterest();
+        directoryName = bank.getDirectoryName();
     }
 
     /**
@@ -97,25 +111,37 @@ public class PrivateBank implements Bank{
         return accountsToTransactions;
     }
 
+    public String getDirectoryName(){
+        return directoryName;
+    }
+
     /**
      * readAccounts() reads all persistent stored accounts from filesystem
      * @throws IOException
      */
-    public void readAccounts() throws IOException {
-
-        Path fileName = Path.of("Accounts/KontoDave.json");
-        String json = Files.readString(fileName);
+    private void readAccounts() throws IOException {
+        Set<String> accounts = getAccounts().keySet();
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Transaction.class, new CustomDeserializer())
                 .create();
 
-        Transaction[] list = gson.fromJson(json, Transaction[].class);
+        accounts.forEach(account -> {
+            Path fileName = Path.of(directoryName + "/Konto?" + account + ".json");
+            String json = "";
+            try {
+                json = Files.readString(fileName);
+            } catch(IOException e){
+                e.printStackTrace();
+            }
 
-        try {
-            createAccount("Dave", Arrays.asList(list));
-        }catch(AccountAlreadyExistsException e){
-            e.printStackTrace();
-        }
+            Transaction[] list = gson.fromJson(json, Transaction[].class);
+
+            try {
+                createAccount(account, Arrays.asList(list));
+            }catch(AccountAlreadyExistsException e){
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -125,14 +151,13 @@ public class PrivateBank implements Bank{
      * @param account to be stored persistent
      * @throws IOException
      */
-    public void writeAccounts(String account) throws IOException {
+    private void writeAccounts(String account) throws IOException {
         Gson gson = new GsonBuilder()
                 .registerTypeHierarchyAdapter(Transaction.class, new CustomSerializer())
                 .setPrettyPrinting()
                 .create();
 
-        String accountName = account.substring(0,1).toUpperCase() + account.substring(1);
-        Writer writer = new FileWriter(   directoryName + "/" + "Konto" + accountName + ".json");
+        Writer writer = new FileWriter(   directoryName + "/Konto?" + account + ".json");
         gson.toJson(getTransactions(account), writer);
         writer.flush();
         writer.close();
@@ -155,6 +180,11 @@ public class PrivateBank implements Bank{
         }
         else {
             accountsToTransactions.put(account, transactions);
+            try {
+                writeAccounts(account);
+            }catch(IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -174,7 +204,14 @@ public class PrivateBank implements Bank{
                     ((Payment) transaction).setIncomingInterest(incomingInterest);
                     ((Payment) transaction).setOutgoingInterest(outgoingInterest);
                 }
+
                 list.add(transaction);
+
+                try {
+                    writeAccounts(account);
+                }catch(IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -191,6 +228,12 @@ public class PrivateBank implements Bank{
             }
             else {
                 list.remove(transaction);
+
+                try {
+                    writeAccounts(account);
+                }catch(IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

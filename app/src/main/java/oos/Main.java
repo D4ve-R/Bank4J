@@ -10,7 +10,6 @@ import oos.bank.transactions.Transaction;
 import oos.bank.transactions.Transfer;
 import oos.bank.PrivateBank;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,19 +61,5 @@ public class Main{
         }catch(AccountAlreadyExistsException e){
             e.printStackTrace();
         }
-
-
-        try {
-            pb.writeAccounts("dave");
-            pb.readAccounts();
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        System.out.println(pb.getTransactions("Dave"));
-
-
-        if(pb.containsTransaction("Dave", trans))
-            System.out.println("It Works!!");
-
     }
 }

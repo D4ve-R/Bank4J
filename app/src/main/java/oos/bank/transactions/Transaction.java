@@ -91,7 +91,7 @@ public abstract class Transaction implements CalculateBill {
      */
     @Override
     public String toString(){
-        return "Date: " + date + "\n" + "Amount: " + calculate() + "\n" + "Description: " + description + "\n";
+        return "Date: " + date + "\nAmount: " + calculate() + "\nDescription: " + description + "\n";
     }
 
     /**
