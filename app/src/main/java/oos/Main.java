@@ -66,17 +66,15 @@ public class Main{
 
         try {
             pb.writeAccounts("dave");
-            //pb.readAccounts();
+            pb.readAccounts();
         }catch(IOException e){
             e.printStackTrace();
         }
+        System.out.println(pb.getTransactions("Dave"));
 
-        /*
+
         if(pb.containsTransaction("Dave", trans))
             System.out.println("It Works!!");
-
-
-         */
 
     }
 }

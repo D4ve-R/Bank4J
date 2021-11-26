@@ -1,6 +1,6 @@
 [
   {
-    "CLASSNAME": "oos.bank.transactions.Transfer",
+    "CLASSNAME": "Transfer",
     "INSTANCE": {
       "date": "03.03.03",
       "amount": 200.5,
@@ -8,7 +8,7 @@
     }
   },
   {
-    "CLASSNAME": "oos.bank.transactions.Payment",
+    "CLASSNAME": "Payment",
     "INSTANCE": {
       "incomingInterest": 0.0,
       "outgoingInterest": 0.0,

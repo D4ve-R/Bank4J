@@ -102,17 +102,17 @@ public class PrivateBank implements Bank{
      * @throws IOException
      */
     public void readAccounts() throws IOException {
+
         Path fileName = Path.of("Accounts/KontoDave.json");
         String json = Files.readString(fileName);
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Transaction.class, new CustomDeserializer())
                 .create();
 
-        Transaction[] tArr = gson.fromJson(json, Transaction[].class);
-        List<Transaction> list = Arrays.asList(tArr);
-        System.out.println(list);
+        Transaction[] list = gson.fromJson(json, Transaction[].class);
+
         try {
-            createAccount("Dave", list);
+            createAccount("Dave", Arrays.asList(list));
         }catch(AccountAlreadyExistsException e){
             e.printStackTrace();
         }
@@ -268,8 +268,8 @@ public class PrivateBank implements Bank{
      * CustomSerializer Class implements JsonSerializer
      * handles serialization of Transaction Class
      */
-    public static class CustomSerializer implements JsonSerializer<Transaction> {
-
+    private static class CustomSerializer implements JsonSerializer<Transaction> {
+        @SuppressWarnings("unchecked")
         @Override
         public JsonElement serialize(Transaction src, Type typeOfSrc, JsonSerializationContext context) {
             Gson gson = new Gson();
@@ -285,23 +285,26 @@ public class PrivateBank implements Bank{
      * CustomDeserializer implements JsonDeserializer
      * handles deserialization of Transaction Class
      */
-    public static class CustomDeserializer implements JsonDeserializer<Transaction> {
-
+    private static class CustomDeserializer implements JsonDeserializer<Transaction> {
+        @SuppressWarnings("unchecked")
         @Override
         public Transaction deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            Gson gson = new Gson();
             JsonObject obj = json.getAsJsonObject();
-            JsonPrimitive p = (JsonPrimitive) obj.get("CLASSNAME");
-            String className = p.getAsString();
-            System.out.println(className);
+            JsonElement el = obj.get("CLASSNAME");
+            if(el == null)
+                throw new JsonParseException("Object member field CLASSNAME not found");
+            String className = el.getAsString();
+
             switch(className) {
                 case "Payment":
-                    return context.deserialize(obj.get("INSTANCE"), Payment.class);
+                    return gson.fromJson(obj.get("INSTANCE"), Payment.class);
                 case "IncomingTransfer":
-                    return context.deserialize(obj.get("INSTANCE"), IncomingTransfer.class);
+                    return gson.fromJson(obj.get("INSTANCE"), IncomingTransfer.class);
                 case "OutgoingTransfer":
-                    return context.deserialize(obj.get("INSTANCE"), OutgoingTransfer.class);
+                    return gson.fromJson(obj.get("INSTANCE"), OutgoingTransfer.class);
                 case "Transfer":
-                    return context.deserialize(obj.get("INSTANCE"), Transfer.class);
+                    return gson.fromJson(obj.get("INSTANCE"), Transfer.class);
                 default:
                     return null;
             }

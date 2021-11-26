@@ -72,6 +72,7 @@ public class Transfer extends Transaction implements CalculateBill {
      * @return sender
      */
     public String getSender(){
+        if(sender == null) return "";
         return sender;
     }
 
@@ -80,6 +81,7 @@ public class Transfer extends Transaction implements CalculateBill {
      * @return recipient
      */
     public String getRecipient(){
+        if(recipient == null) return "";
         return recipient;
     }
 
@@ -91,7 +93,7 @@ public class Transfer extends Transaction implements CalculateBill {
      */
     @Override
     public String toString(){
-        return "{ \n" + super.toString() + "Sender: " + sender + "\n" + "Recipient: " + recipient + "\n} \n";
+        return "Transfer: { \n" + super.toString() + "Sender: " + sender + "\n" + "Recipient: " + recipient + "\n} \n";
     }
 
     /**
