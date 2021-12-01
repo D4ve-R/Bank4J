@@ -5,11 +5,14 @@
 
 package oos.bank;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +21,8 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.io.IOException;
+import java.util.stream.Collectors;
+
 import com.google.gson.*;
 
 import oos.bank.exceptions.*;
@@ -120,13 +125,27 @@ public class PrivateBank implements Bank{
      * @throws IOException
      */
     private void readAccounts() throws IOException {
-        Set<String> accounts = getAccounts().keySet();
+        List<String> files = null;
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Transaction.class, new CustomDeserializer())
                 .create();
 
-        accounts.forEach(account -> {
-            Path fileName = Path.of(directoryName + "/Konto?" + account + ".json");
+        Path path = Paths.get(System.getenv("HOME") + File.separator + directoryName);
+        if(!Files.exists(path)) {
+            Files.createDirectory(path);
+            return;
+        }
+
+        try {
+            files = Files.list(path)
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+        for(String filePath : files){
+            Path fileName = Path.of(filePath);
             String json = "";
             try {
                 json = Files.readString(fileName);
@@ -137,11 +156,14 @@ public class PrivateBank implements Bank{
             Transaction[] list = gson.fromJson(json, Transaction[].class);
 
             try {
-                createAccount(account, Arrays.asList(list));
+                String[] arr = filePath.split("/Konto", 2);
+                String[] account = arr[1].split(".json");
+                createAccount(account[0], Arrays.asList(list));
             }catch(AccountAlreadyExistsException e){
                 e.printStackTrace();
             }
-        });
+        }
+
     }
 
     /**
@@ -157,7 +179,7 @@ public class PrivateBank implements Bank{
                 .setPrettyPrinting()
                 .create();
 
-        Writer writer = new FileWriter(   directoryName + "/Konto?" + account + ".json");
+        Writer writer = new FileWriter(  System.getenv("HOME") + "/" + directoryName + "/Konto" + account + ".json");
         gson.toJson(getTransactions(account), writer);
         writer.flush();
         writer.close();
@@ -249,23 +271,6 @@ public class PrivateBank implements Bank{
         for(Transaction t : getTransactions(account)){
             sum += t.calculate();
         }
-        /*
-        for(Object t : accountsToTransactions.get(account)){
-            if(t instanceof Transfer){
-                Transfer tf = (Transfer) t;
-                if(tf.getSender() == account){
-                   sum -= tf.calculate();
-                }
-                else{
-                    sum += tf.calculate();
-                }
-            }
-            else{
-                Transaction ts = (Transaction) t;
-                sum += ts.calculate();
-            }
-        }
-        */
         return sum;
     }
 
