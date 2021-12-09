@@ -7,21 +7,20 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane fx:controller="oos.bank.gui.BankController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oos.bank.gui.BankController">
    <children>
       <MenuBar prefHeight="30.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="Bank">
             <items>
-              <MenuItem mnemonicParsing="false" text="Info" />
+              <MenuItem mnemonicParsing="false" text="Info" onAction="#showInfo"/>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Accounts">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete all" />
+              <MenuItem mnemonicParsing="false" text="Delete all" onAction="#deleteAll"/>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -35,8 +34,12 @@
          <items>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="label" layoutX="42.0" layoutY="14.0" text="Label" />
-                   <Label fx:id="totalAmount" layoutX="42.0" layoutY="14.0" text="Label" />
+                  <VBox layoutY="2.0" prefHeight="572.0" prefWidth="143.0">
+                     <children>
+                        <Label fx:id="label" text="Label" />
+                        <Label fx:id="totalAmount" text="Label" />
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="372.0" prefWidth="452.0">

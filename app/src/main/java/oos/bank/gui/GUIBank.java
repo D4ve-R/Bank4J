@@ -2,7 +2,6 @@
  * OOS Praktikum
  * David Rechkemmer
  */
-
 package oos.bank.gui;
 
 import javafx.application.Application;
@@ -20,6 +19,7 @@ public class GUIBank extends Application {
         Scene scene = new Scene(root);
         stage.setTitle("BankManager");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
         controller.showAccounts();
     }

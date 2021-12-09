@@ -128,16 +128,15 @@ public class PrivateBank implements Bank {
      * @throws IOException
      */
     private void readAccounts() throws IOException {
-        List<String> files = null;
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(Transaction.class, new CustomDeserializer())
-                .create();
-
         Path path = Paths.get(System.getProperty("user.home") + File.separator + directoryName);
         if(!Files.exists(path)) {
             Files.createDirectory(path);
             return;
         }
+        List<String> files = null;
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Transaction.class, new CustomDeserializer())
+                .create();
 
         try {
             files = Files.list(path)
