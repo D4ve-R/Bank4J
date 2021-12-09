@@ -3,6 +3,6 @@ out
 .DS_Store
 # Ignore Gradle project-specific cache directory
 .gradle
-
+.idea/libraries
 # Ignore Gradle build output directory
 build

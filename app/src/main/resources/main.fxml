@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane fx:controller="oos.bank.gui.BankController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar prefHeight="30.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Bank">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Info" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Accounts">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete all" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <SplitPane dividerPositions="0.26505016722408026" layoutX="-1.0" layoutY="27.0" prefHeight="374.0" prefWidth="600.0">
+         <items>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="label" layoutX="42.0" layoutY="14.0" text="Label" />
+                   <Label fx:id="totalAmount" layoutX="42.0" layoutY="14.0" text="Label" />
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="372.0" prefWidth="452.0">
+               <children>
+                  <ListView fx:id="listView" layoutX="-1.0" layoutY="-1.0" prefHeight="573.0" prefWidth="449.0">
+                  </ListView>
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

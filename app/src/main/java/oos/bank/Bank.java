@@ -5,6 +5,7 @@
 
 package oos.bank;
 
+import java.io.IOException;
 import java.util.List;
 import oos.bank.exceptions.*;
 import oos.bank.transactions.Transaction;
@@ -16,12 +17,18 @@ import oos.bank.transactions.Transaction;
 public interface Bank {
 
     /**
+     * get all accounts
+     * @return List containing all accounts
+     */
+    List<String> getAllAccounts();
+
+    /**
      * Adds an account to the bank. If the account already exists, an exception is thrown.
      *
      * @param account the account to be added
      * @throws AccountAlreadyExistsException if the account already exists
      */
-    void createAccount(String account) throws AccountAlreadyExistsException;
+    void createAccount(String account) throws AccountAlreadyExistsException, IOException;
 
     /**
      * Adds an account (with all specified transactions) to the bank. If the account already exists,
@@ -31,7 +38,15 @@ public interface Bank {
      * @throws AccountAlreadyExistsException if the account already exists
      */
     void createAccount(String account, List<Transaction> transactions)
-            throws AccountAlreadyExistsException;
+            throws AccountAlreadyExistsException, IOException;
+
+    /**
+     * deletes the account matching account
+     * @param account
+     * @throws AccountDoesNotExistException
+     * @throws IOException
+     */
+    void deleteAccount(String account) throws AccountDoesNotExistException, IOException;
 
     /**
      * Adds a transaction to an account. If the specified account does not exist, an exception is
@@ -42,7 +57,7 @@ public interface Bank {
      * @throws TransactionAlreadyExistException if the transaction already exists
      */
     void addTransaction(String account, Transaction transaction)
-            throws TransactionAlreadyExistException, AccountDoesNotExistException;
+            throws TransactionAlreadyExistException, AccountDoesNotExistException, IOException;
 
     /**
      * Removes a transaction from an account. If the transaction does not exist, an exception is
@@ -53,7 +68,7 @@ public interface Bank {
      * @throws TransactionDoesNotExistException if the transaction cannot be found
      */
     void removeTransaction(String account, Transaction transaction)
-            throws TransactionDoesNotExistException, AccountDoesNotExistException;
+            throws TransactionDoesNotExistException, AccountDoesNotExistException, IOException;
 
     /**
      * Checks whether the specified transaction for a given account exists.
@@ -70,6 +85,12 @@ public interface Bank {
      * @return the current account balance
      */
     double getAccountBalance(String account);
+
+    /**
+     * Returns the sum of all accounts's amount
+     * @return total money in the bank
+     */
+    double getTotalAmount();
 
     /**
      * Returns a list of transactions for an account.
@@ -97,4 +118,5 @@ public interface Bank {
      * @return the list of transactions
      */
     List<Transaction> getTransactionsByType(String account, boolean positive);
+
 }
