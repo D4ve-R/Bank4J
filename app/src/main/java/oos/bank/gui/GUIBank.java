@@ -15,13 +15,13 @@ public class GUIBank extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
         Parent root = loader.load();
-        BankController controller = loader.getController();
+        Controller controller = loader.getController();
         Scene scene = new Scene(root);
         stage.setTitle("BankManager");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-        controller.showAccounts();
+        controller.init();
     }
 }
 

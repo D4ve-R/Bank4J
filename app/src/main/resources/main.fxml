@@ -13,7 +13,7 @@
    <children>
       <MenuBar prefHeight="30.0" prefWidth="600.0">
         <menus>
-          <Menu mnemonicParsing="false" text="Bank">
+          <Menu mnemonicParsing="false" text="BankManager">
             <items>
               <MenuItem mnemonicParsing="false" text="Info" onAction="#showInfo"/>
             </items>
@@ -25,7 +25,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+              <MenuItem mnemonicParsing="false" text="About BankManager" />
             </items>
           </Menu>
         </menus>
@@ -37,7 +37,7 @@
                   <VBox layoutY="2.0" prefHeight="572.0" prefWidth="143.0">
                      <children>
                         <Label fx:id="label" text="Label" />
-                        <Label fx:id="totalAmount" text="Label" />
+                        <Label fx:id="balance" text="Label" />
                      </children>
                   </VBox>
                </children>

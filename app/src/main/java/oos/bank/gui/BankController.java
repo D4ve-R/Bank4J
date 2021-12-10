@@ -12,22 +12,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import oos.bank.PrivateBank;
 
-import java.io.File;
 import java.util.Optional;
 
-public class BankController {
+public class BankController extends Controller{
 
-    PrivateBank pb = new PrivateBank();
     @FXML ListView<String> listView;
     @FXML Label label;
-    @FXML Label totalAmount;
 
     public void showAccounts(){
-        label.setText(pb.getName());
-        totalAmount.setText("Total: " + pb.getTotalAmount() + " €");
-
         listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
         listView.setCellFactory(factory -> {
             ListCell<String> cell = new ListCell<>();
@@ -35,32 +28,31 @@ public class BankController {
 
             MenuItem viewItem = new MenuItem("View");
             viewItem.setOnAction(event -> {
-                System.out.println(cell.getItem());
                 Stage stage = (Stage) cell.getScene().getWindow();
+                stage.setUserData(cell.getItem());
                 try {
-                    Parent view = new FXMLLoader(getClass().getResource("/main2.fxml")).load();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view.fxml"));
+                    Parent view = loader.load();
+                    Controller controller = loader.getController();
                     Scene scene = new Scene(view);
                     stage.setScene(scene);
+                    controller.init();
                 }catch (Exception e){e.printStackTrace();}
             });
 
             MenuItem deleteItem = new MenuItem("Delete");
             deleteItem.setOnAction(event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Deleting Account: " + cell.getItem() + " ?");
                 alert.setTitle("Delete");
-                alert.setContentText("Deleting Account: " + cell.getItem() + " ?");
                 Optional<ButtonType> result = alert.showAndWait();
-
                 if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
                     try {
                         pb.deleteAccount(cell.getItem());
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Alert alertError = new Alert(Alert.AlertType.INFORMATION);
+                        Alert alertError = new Alert(Alert.AlertType.INFORMATION, "Could not delete file");
                         alertError.setTitle("Error");
-                        alertError.setHeaderText("Failed to deleted");
-                        String s ="This is an example of JavaFX 8 Dialogs... ";
-                        alertError.setContentText(s);
+                        alertError.setHeaderText("Failed");
                         alertError.show();
                     }
                     listView.getItems().remove(cell.getItem());
@@ -80,9 +72,8 @@ public class BankController {
     }
 
     @FXML void deleteAll() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Deleting all accounts ?");
         alert.setTitle("Delete all");
-        alert.setContentText("Deleting all accounts ?");
         Optional<ButtonType> result = alert.showAndWait();
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             try {
@@ -90,22 +81,20 @@ public class BankController {
                     pb.deleteAccount(account);
             } catch (Exception e) {
                 e.printStackTrace();
-                Alert alertError = new Alert(Alert.AlertType.INFORMATION);
+                Alert alertError = new Alert(Alert.AlertType.INFORMATION, "Could not delete files");
                 alertError.setTitle("Error");
                 alertError.setHeaderText("Failed to deleted");
-                String s = "This is an example of JavaFX 8 Dialogs... ";
-                alertError.setContentText(s);
                 alertError.show();
             }
             listView.getItems().clear();
         }
     }
 
-    @FXML void showInfo(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Info");
-        alert.setHeaderText("Information");
-        alert.setContentText("Bankname: " + pb.getName() + "\nDirectoryname: " + System.getProperty("user.home") + File.separator + pb.getDirectoryName());
-        alert.show();
+    public void init(){
+        super.init();
+        label.setText(pb.getName());
+        balance.setText("Total: " + pb.getTotalAmount() + " €");
+        showAccounts();
     }
+
 }
