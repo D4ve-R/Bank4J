@@ -49,9 +49,9 @@ public class ViewController extends Controller {
         transactionList.setItems(items);
     }
 
-    @FXML void backToMain(ActionEvent event){
+    @FXML void backToMain(){
         try {
-            switchToMain(event);
+            switchScene("/main.fxml");
         } catch(Exception e){e.printStackTrace();}
     }
 
@@ -65,7 +65,7 @@ public class ViewController extends Controller {
      */
     @Override
     public void updateBalance(){
-        balance.setText(pb.getAccountBalance(account) + " €");
+        balance.setText(String.format("%.2f", pb.getAccountBalance(account)) + " €");
     }
 
 
@@ -84,7 +84,7 @@ public class ViewController extends Controller {
             account = (String) stage.getUserData();
         }
         accountName.setText(account);
-        balance.setText(pb.getAccountBalance(account) + " €");
+        updateBalance();
         items = FXCollections.observableArrayList(pb.getTransactions(account));
         transactionList.setItems(items);
     }

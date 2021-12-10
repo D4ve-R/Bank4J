@@ -9,8 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import oos.bank.gui.dialog.AddAccountDialog;
-
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -29,7 +27,7 @@ public class MainController extends Controller {
                     pb.deleteAccount(account);
             } catch (Exception e) {
                 e.printStackTrace();
-                Alert alertError = new Alert(Alert.AlertType.INFORMATION, "Could not delete files");
+                Alert alertError = new Alert(Alert.AlertType.INFORMATION, e.getLocalizedMessage());
                 alertError.setTitle("Error");
                 alertError.setHeaderText("Failed to deleted");
                 alertError.show();
@@ -72,12 +70,12 @@ public class MainController extends Controller {
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
         label.setText(pb.getName());
-        balance.setText(pb.getTotalAmount() + " €");
+        balance.setText(String.format("%.2f", pb.getTotalAmount()) + " €");
         showAccounts();
     }
 
     /**
-     * Adds all accounts of PrivateBank to ListView
+     * Adds all accounts of PrivateBank to ListView listView
      */
     public void showAccounts(){
         listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
@@ -90,7 +88,7 @@ public class MainController extends Controller {
                 Stage stage = (Stage) cell.getScene().getWindow();
                 stage.setUserData(cell.getItem());
                 try {
-                    switchToView(event);
+                    switchScene("/view.fxml");
                 }catch (Exception e){e.printStackTrace();}
             });
 

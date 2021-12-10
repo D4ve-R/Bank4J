@@ -46,30 +46,16 @@ public class Controller implements Initializable {
      * @param stage current Stage
      */
     public void setStage(Stage stage){
-        this.stage = stage;
+        Controller.stage = stage;
     }
 
     /**
-     * switch stage to main.fxml
-     * @param event
+     * switch the currently displayed scene
+     * @param pathFxmlFile path to fxml file
      * @throws IOException
      */
-    public void switchToMain(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/main.fxml"));
-        //stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    /**
-     * switch stage to view.fxml
-     * @param event
-     * @throws IOException
-     */
-    public void switchToView(ActionEvent event) throws IOException {
-        root = FXMLLoader.load(getClass().getResource("/view.fxml"));
-        //stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+    public void switchScene(String pathFxmlFile) throws IOException {
+        root = FXMLLoader.load(getClass().getResource(pathFxmlFile));
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
@@ -90,6 +76,6 @@ public class Controller implements Initializable {
      * updates the balance Label to display new total amount
      */
     public void updateBalance(){
-        balance.setText("Total: " + pb.getTotalAmount() + " €");
+        balance.setText(String.format("%.2f", pb.getTotalAmount()) + " €");
     }
 }

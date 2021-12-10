@@ -308,12 +308,12 @@ public class PrivateBank implements Bank {
 
     @Override
     public List<Transaction> getTransactions(String account) {
-        return new ArrayList<>(accountsToTransactions.get(account));
+        return accountsToTransactions.get(account);
     }
 
     @Override
     public List<Transaction> getTransactionsSorted(String account, boolean desc) {
-        List<Transaction> list = getTransactions(account);
+        List<Transaction> list = new ArrayList<>(getTransactions(account));
         list.sort((t1, t2) -> (int) (t1.getAmount() - t2.getAmount()));
         if(desc) Collections.reverse(list);
         return list;
@@ -321,7 +321,7 @@ public class PrivateBank implements Bank {
 
     @Override
     public List<Transaction> getTransactionsByType(String account, boolean positive) {
-        List<Transaction> list = getTransactions(account);
+        List<Transaction> list = new ArrayList<>(getTransactions(account));
         if(positive){
             list.removeIf(t -> t.getAmount() < 0);
         }
