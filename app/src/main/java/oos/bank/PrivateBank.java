@@ -31,6 +31,7 @@ import oos.bank.transactions.*;
  * Handles interests, accounts and associated transactions
  */
 public class PrivateBank implements Bank {
+    private static PrivateBank bank;
     private static String name;
     private static double incomingInterest;
     private static double outgoingInterest;
@@ -43,34 +44,24 @@ public class PrivateBank implements Bank {
      * @param in incomingInterest
      * @param out outgoingInterest
      */
-    public PrivateBank(String name, double in, double out, String directoryName){
+    private PrivateBank(String name, double in, double out, String directoryName){
         this.name = name;
         outgoingInterest = out;
         incomingInterest = in;
         this.directoryName = directoryName;
-
 
         try {
             readAccounts();
         }catch(IOException e) {
             e.printStackTrace();
         }
-
     }
 
-    /**
-     * PrivateBank Copy Constructor initialize from other
-     * PrivateBank obj
-     * @param bank PrivateBank obj to be copied
-     */
-    public PrivateBank(PrivateBank bank){
-        name = bank.getName();
-        incomingInterest = bank.getIncomingInterest();
-        outgoingInterest = bank.getOutgoingInterest();
-        directoryName = bank.getDirectoryName();
-    }
-
-    public PrivateBank(){
+    public static PrivateBank getInstance(){
+        if(bank == null){
+            bank = new PrivateBank("HSBC", 0.1, 0.1, "BankManager");
+        }
+        return bank;
     }
 
     /**
@@ -117,8 +108,20 @@ public class PrivateBank implements Bank {
         return accountsToTransactions;
     }
 
+    /**
+     * Returns the name of the current dir
+     * @return current dir name
+     */
     public String getDirectoryName(){
         return directoryName;
+    }
+
+    /**
+     * Sets the name of the current dir
+     * @param name of dir
+     */
+    public void setDirectoryName(String name){
+        directoryName = name;
     }
 
     /**
@@ -160,7 +163,7 @@ public class PrivateBank implements Bank {
             try {
                 String[] arr = filePath.split("/Konto", 2);
                 String[] account = arr[1].split(".json");
-                if(account != null && list != null)
+                if(list != null)
                     createAccount(account[0], Arrays.asList(list));
             }catch(AccountAlreadyExistsException e){
                 e.printStackTrace();
@@ -305,14 +308,14 @@ public class PrivateBank implements Bank {
 
     @Override
     public List<Transaction> getTransactions(String account) {
-        return accountsToTransactions.get(account);
+        return new ArrayList<>(accountsToTransactions.get(account));
     }
 
     @Override
-    public List<Transaction> getTransactionsSorted(String account, boolean asc) {
+    public List<Transaction> getTransactionsSorted(String account, boolean desc) {
         List<Transaction> list = getTransactions(account);
-        Collections.sort(list, (t1,t2)->{return (int)(t1.getAmount() - t2.getAmount());} );
-        if(!asc) Collections.reverse(list);
+        list.sort((t1, t2) -> (int) (t1.getAmount() - t2.getAmount()));
+        if(desc) Collections.reverse(list);
         return list;
     }
 
@@ -325,6 +328,7 @@ public class PrivateBank implements Bank {
         else {
             list.removeIf(t -> t.getAmount() >= 0);
         }
+        System.out.println(list);
         return list;
     }
 

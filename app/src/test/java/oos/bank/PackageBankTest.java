@@ -167,7 +167,9 @@ class PackageBankTest {
     class PrivateBankTest {
         @BeforeEach
         void setUp() {
-            PrivateBank pb1 = new PrivateBank("hsbc", 0.05, 0.05, "Accounts");
+            PrivateBank pb1 = PrivateBank.getInstance();
+            pb1.setIncomingInterest(0.5);
+            pb1.setOutgoingInterest(0.5);
         }
 
         @AfterEach

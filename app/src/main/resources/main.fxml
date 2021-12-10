@@ -8,19 +8,21 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oos.bank.gui.BankController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="oos.bank.gui.controller.MainController">
    <children>
       <MenuBar prefHeight="30.0" prefWidth="600.0">
         <menus>
           <Menu mnemonicParsing="false" text="BankManager">
             <items>
-              <MenuItem mnemonicParsing="false" text="Info" onAction="#showInfo"/>
+              <MenuItem mnemonicParsing="false" onAction="#showInfo" text="Info" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Accounts">
             <items>
-              <MenuItem mnemonicParsing="false" text="Delete all" onAction="#deleteAll"/>
+                <MenuItem mnemonicParsing="false" onAction="#addAccount" text="Add Account" />
+              <MenuItem mnemonicParsing="false" onAction="#deleteAll" text="Delete all" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
@@ -36,7 +38,15 @@
                <children>
                   <VBox layoutY="2.0" prefHeight="572.0" prefWidth="143.0">
                      <children>
+                         <Label text="Name:">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font></Label>
                         <Label fx:id="label" text="Label" />
+                         <Label text="Total Balance:">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Label>
                         <Label fx:id="balance" text="Label" />
                      </children>
                   </VBox>
@@ -44,8 +54,13 @@
             </AnchorPane>
             <AnchorPane prefHeight="372.0" prefWidth="452.0">
                <children>
-                  <ListView fx:id="listView" layoutX="-1.0" layoutY="-1.0" prefHeight="573.0" prefWidth="449.0">
-                  </ListView>
+                  <VBox>
+                     <children>
+                        <Label text="Accounts" />
+                        <ListView fx:id="listView" prefHeight="575.0" prefWidth="437.0">
+                        </ListView>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
          </items>

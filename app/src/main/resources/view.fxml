@@ -47,8 +47,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.control.ContextMenu?>
-<AnchorPane fx:controller="oos.bank.gui.ViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" >
+
+<AnchorPane fx:controller="oos.bank.gui.controller.ViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" >
 <VBox prefHeight="600.0" prefWidth="900.0">
   <children>
     <MenuBar VBox.vgrow="NEVER">
@@ -102,10 +102,10 @@
                       <Label alignment="CENTER" font="$x1" style="&#10;" text="Transactions" textAlignment="CENTER" textFill="$x2" wrapText="false" />
                               <SplitMenuButton mnemonicParsing="false" text="Sort">
                                 <items>
-                                  <MenuItem mnemonicParsing="false" text="sort ascending"  onAction="#sortAsc"/>
-                                  <MenuItem mnemonicParsing="false" text="sort descending"  onAction="#sortDesc"/>
-                                    <MenuItem mnemonicParsing="false" text="only positive"  onAction="#onlyPositiv"/>
-                                    <MenuItem mnemonicParsing="false" text="only negative"  onAction="#onlyNegative"/>
+                                  <MenuItem fx:id="sortAscBtn" mnemonicParsing="false" text="sort ascending"  onAction="#sortAsc"/>
+                                  <MenuItem fx:id="sortDescBtn" mnemonicParsing="false" text="sort descending"  onAction="#sortDesc"/>
+                                    <MenuItem fx:id="positivBtn" mnemonicParsing="false" text="only positive"  onAction="#onlyPositiv"/>
+                                    <MenuItem fx:id="negativBtn" mnemonicParsing="false" text="only negative"  onAction="#onlyNegativ"/>
                                 </items>
                               </SplitMenuButton>
                                <ListView fx:id="transactionList" prefHeight="557.0" prefWidth="443.0" >
