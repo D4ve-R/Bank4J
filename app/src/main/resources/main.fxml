@@ -48,9 +48,14 @@
                         <Label fx:id="label" text="Label" />
                          <Label text="Total Balance:">
                            <font>
-                              <Font size="14.0" />
+                              <Font name="System Bold" size="14.0" />
                            </font></Label>
                         <Label fx:id="balance" text="Label" />
+                         <Label text="Customers:">
+                             <font>
+                                 <Font name="System Bold" size="14.0" />
+                             </font></Label>
+                         <Label fx:id="customers" text="Label" />
                      </children>
                   </VBox>
                </children>

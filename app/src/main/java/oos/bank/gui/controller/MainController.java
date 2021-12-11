@@ -21,8 +21,56 @@ import java.util.ResourceBundle;
 public class MainController extends Controller {
     @FXML ListView<String> listView;
     @FXML Label label;
+    @FXML Label customers;
 
-    @FXML void deleteAll() {
+    /**
+     * Called to initialize a controller after its root element has been
+     * completely processed.
+     *
+     * @param location  The location used to resolve relative paths for the root object, or
+     *                  {@code null} if the location is not known.
+     * @param resources The resources used to localize the root object, or {@code null} if
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+        label.setText(pb.getName());
+        balance.setText(String.format("%.2f", pb.getTotalAmount()) + " €");
+        showAccounts();
+        setCustomers();
+    }
+
+    /**
+     * Adds all accounts of PrivateBank to ListView listView
+     */
+    public void showAccounts(){
+        listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
+        listView.setCellFactory(factory -> new AccountCellFactory(this));
+    }
+
+    public void addAccount(){
+        AddAccountDialog dialog = new AddAccountDialog();
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(account -> {
+            try {
+                pb.createAccount(account);
+            } catch(Exception e){
+                ErrorAlert alert = new ErrorAlert(e.getLocalizedMessage());
+                alert.display();
+            }
+        });
+        listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
+        setCustomers();
+    }
+
+    public void deleteAccount(String account) throws Exception {
+        pb.deleteAccount(account);
+        listView.getItems().remove(account);
+        updateBalance();
+        setCustomers();
+    }
+
+    public void deleteAll() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Deleting all accounts ?");
         alert.setTitle("Delete all");
         Optional<ButtonType> result = alert.showAndWait();
@@ -39,47 +87,7 @@ public class MainController extends Controller {
         updateBalance();
     }
 
-    @FXML void addAccount(){
-        AddAccountDialog dialog = new AddAccountDialog();
-        Optional<String> result = dialog.showAndWait();
-        result.ifPresent(account -> {
-            try {
-                pb.createAccount(account);
-            } catch(Exception e){
-                ErrorAlert alert = new ErrorAlert(e.getLocalizedMessage());
-                alert.display();
-            }
-        });
-        listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
-    }
-
-    /**
-     * Called to initialize a controller after its root element has been
-     * completely processed.
-     *
-     * @param location  The location used to resolve relative paths for the root object, or
-     *                  {@code null} if the location is not known.
-     * @param resources The resources used to localize the root object, or {@code null} if
-     */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        super.initialize(location, resources);
-        label.setText(pb.getName());
-        balance.setText(String.format("%.2f", pb.getTotalAmount()) + " €");
-        showAccounts();
-    }
-
-    /**
-     * Adds all accounts of PrivateBank to ListView listView
-     */
-    public void showAccounts(){
-        listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
-        listView.setCellFactory(factory -> new AccountCellFactory(this));
-    }
-
-    public void deleteAccount(String account) throws Exception {
-        pb.deleteAccount(account);
-        listView.getItems().remove(account);
-        updateBalance();
+    public void setCustomers(){
+        customers.setText(Integer.toString(pb.countCustomers()));
     }
 }

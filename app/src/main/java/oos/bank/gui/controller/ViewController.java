@@ -14,9 +14,7 @@ import oos.bank.gui.cellfactory.TransactionCellFactory;
 import oos.bank.gui.dialog.AddTransactionDialog;
 import oos.bank.transactions.Transaction;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -25,7 +23,7 @@ public class ViewController extends Controller {
     private static ObservableList<Transaction> items;
     @FXML Label accountName;
     @FXML Label balance;
-    @FXML static Label transaction;
+    @FXML  Label transaction;
     @FXML ListView<Transaction> transactionList;
 
     /**
@@ -46,9 +44,13 @@ public class ViewController extends Controller {
         updateBalance();
         items = FXCollections.observableArrayList(pb.getTransactions(account));
         transactionList.setItems(items);
-        transactionList.setCellFactory(transaction -> new TransactionCellFactory());
+        transactionList.setCellFactory(transaction -> new TransactionCellFactory(this));
     }
 
+    /**
+     * display the selected Transaction in the sidebar
+     * @param t Trasnaction to display
+     */
     public void setViewArea(Transaction t){
         transaction.setText(t.toString());
     }
@@ -92,8 +94,14 @@ public class ViewController extends Controller {
         result.ifPresent(t -> transactionList.getItems().add(t));
     }
 
+    /**
+     * Handles deletion of Transaction
+     * @param t Transaction to delete
+     * @throws Exception
+     */
     public void deleteTransaction(Transaction t) throws Exception {
         pb.removeTransaction((String) stage.getUserData(), t);
+        transactionList.getItems().remove(t);
         updateBalance();
     }
 

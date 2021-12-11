@@ -125,6 +125,14 @@ public class PrivateBank implements Bank {
     }
 
     /**
+     * Returns the amount of customers
+     * @return amount of customers
+     */
+    public int countCustomers(){
+        return accountsToTransactions.size();
+    }
+
+    /**
      * readAccounts() reads all persistent stored accounts from filesystem
      * searches for the directory in the user home path and creates it, if not exists
      * loops over all files in the dir

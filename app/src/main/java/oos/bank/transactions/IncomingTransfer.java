@@ -33,6 +33,6 @@ public class IncomingTransfer extends Transfer {
 
     @Override
     public String toString(){
-        return "OutgoingTransfer: " + super.toString();
+        return "IncomingTransfer: " + super.toString();
     }
 }

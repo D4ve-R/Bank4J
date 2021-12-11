@@ -13,10 +13,14 @@ import oos.bank.transactions.Transaction;
 import java.util.Optional;
 
 public class TransactionCellFactory extends ListCell<Transaction> {
+    private ViewController controller;
+    public TransactionCellFactory(ViewController controller){
+        this.controller = controller;
+    }
+
     @Override
     protected void updateItem(Transaction t, boolean empty){
         super.updateItem(t, empty);
-        ViewController controller = new ViewController();
 
         MenuItem viewItem = new MenuItem("View");
         viewItem.setOnAction(event -> {
@@ -30,8 +34,6 @@ public class TransactionCellFactory extends ListCell<Transaction> {
             Optional<ButtonType> result = alert.showAndWait();
             if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
                 try {
-                    ListView<Transaction> listView = this.getListView();
-                    listView.getItems().remove(this.getItem());
                     controller.deleteTransaction(this.getItem());
                 } catch (Exception e) {
                     ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
@@ -49,12 +51,13 @@ public class TransactionCellFactory extends ListCell<Transaction> {
         }
         else{
             setText(t.toString());
-            setContextMenu(contextMenu);
             setGraphic(null);
         }
 
+
         emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
             if (isNowEmpty) {
+                setText(null);
                 setContextMenu(null);
             } else {
                 setContextMenu(contextMenu);

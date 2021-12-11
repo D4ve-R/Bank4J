@@ -39,9 +39,6 @@ public class AccountCellFactory extends ListCell<String> {
             if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
                 try {
                     controller.deleteAccount(this.getItem());
-                    //pb.deleteAccount(cell.getItem());
-                    //listView.getItems().remove(cell.getItem());
-                    //updateBalance();
                 } catch (Exception e) {
                     ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
                     errorAlert.display();
@@ -49,12 +46,11 @@ public class AccountCellFactory extends ListCell<String> {
             }
         });
 
-        ContextMenu contextMenu = new ContextMenu(viewItem, deleteItem);
         emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
             if (isNowEmpty) {
                 setContextMenu(null);
             } else {
-                setContextMenu(contextMenu);
+                setContextMenu(new ContextMenu(viewItem, deleteItem));
             }
         });
     }
