@@ -7,14 +7,15 @@ package oos.bank.gui.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import oos.bank.gui.dialog.AddAccountDialog;
+import oos.bank.gui.dialog.AddTransactionDialog;
 import oos.bank.transactions.Transaction;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ViewController extends Controller {
@@ -55,9 +56,14 @@ public class ViewController extends Controller {
         } catch(Exception e){e.printStackTrace();}
     }
 
-    @FXML void addTransaction(){
-        AddAccountDialog dialog = new AddAccountDialog();
-        dialog.show();
+    @FXML void addTransaction() throws IOException {
+        AddTransactionDialog dialog = new AddTransactionDialog();
+        dialog.display();
+        System.out.println("blabla");
+        items.clear();
+        items = FXCollections.observableArrayList(new ArrayList<>(pb.getTransactions(account)));
+        transactionList.setItems(items);
+        updateBalance();
     }
 
     /**

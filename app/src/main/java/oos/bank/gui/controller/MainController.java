@@ -9,6 +9,9 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import oos.bank.gui.dialog.AddAccountDialog;
+import oos.bank.gui.dialog.ErrorAlert;
+
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -26,11 +29,8 @@ public class MainController extends Controller {
                 for (String account : pb.getAllAccounts())
                     pb.deleteAccount(account);
             } catch (Exception e) {
-                e.printStackTrace();
-                Alert alertError = new Alert(Alert.AlertType.INFORMATION, e.getLocalizedMessage());
-                alertError.setTitle("Error");
-                alertError.setHeaderText("Failed to deleted");
-                alertError.show();
+                ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
+                errorAlert.display();
             }
             listView.getItems().clear();
         }
@@ -38,21 +38,14 @@ public class MainController extends Controller {
     }
 
     @FXML void addAccount(){
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Add Account");
-        dialog.setHeaderText("Create a new Account");
-        dialog.setContentText("Account name : ");
-
+        AddAccountDialog dialog = new AddAccountDialog();
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(account -> {
             try {
                 pb.createAccount(account);
             } catch(Exception e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Error occured !");
-                alert.setContentText(e.getLocalizedMessage());
-                alert.showAndWait();
+                ErrorAlert alert = new ErrorAlert(e.getLocalizedMessage());
+                alert.display();
             }
         });
         listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
@@ -100,9 +93,12 @@ public class MainController extends Controller {
                 if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
                     try {
                         pb.deleteAccount(cell.getItem());
+                        listView.getItems().remove(cell.getItem());
                         updateBalance();
-                    } catch (Exception e) { e.printStackTrace();}
-                    listView.getItems().remove(cell.getItem());
+                    } catch (Exception e) {
+                        ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
+                        errorAlert.display();
+                    }
                 }
             });
 

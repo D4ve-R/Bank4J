@@ -247,7 +247,7 @@ public class PrivateBank implements Bank {
             throw new AccountDoesNotExistException(account);
         }
         else {
-            List list = accountsToTransactions.get(account);
+            List<Transaction> list = new ArrayList<>(accountsToTransactions.get(account));
             if (list.contains(transaction)) {
                 throw new TransactionAlreadyExistException(transaction);
             }
@@ -257,6 +257,7 @@ public class PrivateBank implements Bank {
                     ((Payment) transaction).setOutgoingInterest(outgoingInterest);
                 }
                 list.add(transaction);
+                accountsToTransactions.put(account, list);
                 writeAccounts(account);
             }
         }
@@ -287,7 +288,7 @@ public class PrivateBank implements Bank {
     @Override
     public double getAccountBalance(String account) {
         double sum = 0;
-        for(Transaction t : getTransactions(account)){
+        for(Transaction t : accountsToTransactions.get(account)){
             sum += t.calculate();
         }
         return sum;
@@ -308,27 +309,26 @@ public class PrivateBank implements Bank {
 
     @Override
     public List<Transaction> getTransactions(String account) {
-        return accountsToTransactions.get(account);
+        return new ArrayList<>(accountsToTransactions.get(account));
     }
 
     @Override
-    public List<Transaction> getTransactionsSorted(String account, boolean desc) {
-        List<Transaction> list = new ArrayList<>(getTransactions(account));
+    public List<Transaction> getTransactionsSorted(String account, boolean asc) {
+        List<Transaction> list = getTransactions(account);
         list.sort((t1, t2) -> (int) (t1.getAmount() - t2.getAmount()));
-        if(desc) Collections.reverse(list);
+        if(!asc) Collections.reverse(list);
         return list;
     }
 
     @Override
     public List<Transaction> getTransactionsByType(String account, boolean positive) {
-        List<Transaction> list = new ArrayList<>(getTransactions(account));
+        List<Transaction> list = getTransactions(account);
         if(positive){
             list.removeIf(t -> t.getAmount() < 0);
         }
         else {
             list.removeIf(t -> t.getAmount() >= 0);
         }
-        System.out.println(list);
         return list;
     }
 

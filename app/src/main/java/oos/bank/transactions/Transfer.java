@@ -3,7 +3,7 @@
  * David Rechkemmer
  */
 
-package oos.bank.transactions;               //defines package-env of the following code
+package oos.bank.transactions;
 
 import oos.bank.CalculateBill;
 
@@ -85,7 +85,6 @@ public class Transfer extends Transaction implements CalculateBill {
         return recipient;
     }
 
-
     /**
      * transfers an Object to a String
      * overwriting Object.toString()
@@ -105,8 +104,7 @@ public class Transfer extends Transaction implements CalculateBill {
     @Override
     public boolean equals(Object obj){
         if(obj == this) return true;
-        if(!(obj instanceof Transfer)) return false;
-        Transfer objT = (Transfer) obj;
+        if(!(obj instanceof Transfer objT)) return false;
         return super.equals(objT) && objT.getSender().equals(sender) && objT.getRecipient().equals(recipient);
     }
 }

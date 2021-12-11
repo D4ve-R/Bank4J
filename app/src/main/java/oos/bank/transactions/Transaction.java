@@ -85,13 +85,23 @@ public abstract class Transaction implements CalculateBill {
     }
 
     /**
+     * if calculate is called by toString()
+     * it will return the raw amount value
+     * @param toString can be true or false
+     * @return real amount
+     */
+    public double calculate(boolean toString){
+        return amount;
+    }
+
+    /**
      * transfers an Object to a String
      * overwriting Object.toString()
      * @return s Object as String
      */
     @Override
     public String toString(){
-        return "Date: " + date + "\nAmount: " + String.format("%.2f",calculate()) + "\nDescription: " + description + "\n";
+        return "Date: " + date + "\nAmount: " + String.format("%.2f", calculate(true)) + " €\nDescription: " + description + "\n";
     }
 
     /**

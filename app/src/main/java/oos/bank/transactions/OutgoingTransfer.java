@@ -19,6 +19,19 @@ public class OutgoingTransfer extends Transfer {
         super(trans);
     }
 
+
+    /**
+     * Constructor for OutgoingTransfer
+     * @param date
+     * @param amount
+     * @param description
+     * @param sender
+     * @param recipient
+     */
+    public OutgoingTransfer(String date, double amount, String description, String sender, String recipient){
+        super(date, amount, description, sender, recipient);
+    }
+
     /**
      * overwritten from Transfer
      * @return negative Amount
@@ -27,4 +40,5 @@ public class OutgoingTransfer extends Transfer {
     public double calculate(){
         return (-1 * super.calculate());
     }
+
 }
