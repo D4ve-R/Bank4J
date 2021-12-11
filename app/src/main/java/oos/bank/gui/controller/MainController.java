@@ -34,8 +34,8 @@ public class MainController extends Controller {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        label.setText(pb.getName());
-        balance.setText(String.format("%.2f", pb.getTotalAmount()) + " €");
+        label.setText(bankModel.getName());
+        updateBalance();
         showAccounts();
         setCustomers();
     }
@@ -44,7 +44,7 @@ public class MainController extends Controller {
      * Adds all accounts of PrivateBank to ListView listView
      */
     public void showAccounts(){
-        listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
+        listView.setItems(FXCollections.observableArrayList(bankModel.getAllAccounts()));
         listView.setCellFactory(factory -> new AccountCellFactory(this));
     }
 
@@ -53,18 +53,18 @@ public class MainController extends Controller {
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(account -> {
             try {
-                pb.createAccount(account);
+                bankModel.createAccount(account);
             } catch(Exception e){
                 ErrorAlert alert = new ErrorAlert(e.getLocalizedMessage());
                 alert.display();
             }
         });
-        listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
+        listView.setItems(FXCollections.observableArrayList(bankModel.getAllAccounts()));
         setCustomers();
     }
 
     public void deleteAccount(String account) throws Exception {
-        pb.deleteAccount(account);
+        bankModel.deleteAccount(account);
         listView.getItems().remove(account);
         updateBalance();
         setCustomers();
@@ -76,8 +76,8 @@ public class MainController extends Controller {
         Optional<ButtonType> result = alert.showAndWait();
         if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
             try {
-                for (String account : pb.getAllAccounts())
-                    pb.deleteAccount(account);
+                for (String account : bankModel.getAllAccounts())
+                    bankModel.deleteAccount(account);
             } catch (Exception e) {
                 ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
                 errorAlert.display();
@@ -85,9 +85,10 @@ public class MainController extends Controller {
             listView.getItems().clear();
         }
         updateBalance();
+        setCustomers();
     }
 
     public void setCustomers(){
-        customers.setText(Integer.toString(pb.countCustomers()));
+        customers.setText(Integer.toString(bankModel.countCustomers()));
     }
 }

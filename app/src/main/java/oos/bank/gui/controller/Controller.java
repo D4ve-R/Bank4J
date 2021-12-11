@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    static PrivateBank pb;
+    static PrivateBank bankModel;
     static Stage stage;
     private Scene scene;
     private Parent root;
@@ -37,7 +37,7 @@ public class Controller implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        pb = PrivateBank.getInstance();
+        bankModel = PrivateBank.getInstance();
     }
 
     /**
@@ -67,7 +67,7 @@ public class Controller implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Info");
         alert.setHeaderText("Information");
-        alert.setContentText("Bankname: " + pb.getName() + "\nDirectoryname: " + System.getProperty("user.home") + File.separator + pb.getDirectoryName());
+        alert.setContentText("Bankname: " + bankModel.getName() + "\nDirectoryname: " + System.getProperty("user.home") + File.separator + bankModel.getDirectoryName());
         alert.show();
     }
 
@@ -75,6 +75,6 @@ public class Controller implements Initializable {
      * updates the balance Label to display new total amount
      */
     public void updateBalance(){
-        balance.setText(String.format("%.2f", pb.getTotalAmount()) + " €");
+        balance.setText(String.format("%.2f", bankModel.getTotalAmount()) + " €");
     }
 }

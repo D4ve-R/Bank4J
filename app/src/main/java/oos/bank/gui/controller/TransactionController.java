@@ -5,18 +5,25 @@
 
 package oos.bank.gui.controller;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import oos.bank.gui.cellfactory.TransactionCellFactory;
 import oos.bank.gui.dialog.ErrorAlert;
 import oos.bank.transactions.*;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * handles creation of a new transaction through AddTransactionDialog
  */
-public class TransactionController extends Controller {
+public class TransactionController extends ViewController {
     private Stage stageCtrl;
+    private ViewController parentControllerInstance;
+
     @FXML TextField date;
     @FXML TextField amount;
     @FXML TextField description;
@@ -30,27 +37,32 @@ public class TransactionController extends Controller {
         stageCtrl = stage;
     }
 
+    public void setParentController(ViewController parentControllerInstance){
+        this.parentControllerInstance = parentControllerInstance;
+    }
+
     public void cancel(){
         stageCtrl.close();
     }
 
-    public void add(){
+    @Override
+    public void addTransaction(){
         double amnt = Double.parseDouble(amount.getText());
         String dt = date.getText();
         String descrp = description.getText();
         try {
             if(payment.isSelected()) {
                 Payment pay = new Payment(dt, amnt, descrp);
-                pb.addTransaction((String) stage.getUserData(), pay);
+                addTransaction(pay);
             }
             else if(transfer.isSelected()){
-                if(amnt < 0) {
+                if(sender.getText() != null && sender.getText().equals(stage.getUserData())) {
                     OutgoingTransfer trans = new OutgoingTransfer(dt, amnt, descrp, sender.getText(), recipient.getText());
-                    pb.addTransaction((String) stage.getUserData(), trans);
+                    addTransaction(trans);
                 }
                 else {
                     IncomingTransfer trans = new IncomingTransfer(dt, amnt, descrp, sender.getText(), recipient.getText());
-                    pb.addTransaction((String) stage.getUserData(), trans);
+                    addTransaction(trans);
                 }
             }
         }catch(Exception e){
@@ -58,6 +70,12 @@ public class TransactionController extends Controller {
             ErrorAlert alert = new ErrorAlert(e.getLocalizedMessage());
             alert.display();
         }
+        parentControllerInstance.updateBalance();
         stageCtrl.close();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }

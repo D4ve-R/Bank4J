@@ -5,6 +5,8 @@
 
 package oos.bank.gui.controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,7 +44,7 @@ public class ViewController extends Controller {
         }
         accountName.setText(account);
         updateBalance();
-        items = FXCollections.observableArrayList(pb.getTransactions(account));
+        items = FXCollections.observableArrayList(bankModel.getTransactions(account));
         transactionList.setItems(items);
         transactionList.setCellFactory(transaction -> new TransactionCellFactory(this));
     }
@@ -57,28 +59,28 @@ public class ViewController extends Controller {
 
     @FXML void sortAsc(){
         items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsSorted(account, true));
+        items = FXCollections.observableArrayList(bankModel.getTransactionsSorted(account, true));
         transactionList.setItems(items);
 
     }
 
     @FXML void sortDesc(){
         items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsSorted(account, false));
+        items = FXCollections.observableArrayList(bankModel.getTransactionsSorted(account, false));
         transactionList.setItems(items);
 
     }
 
     @FXML void onlyPositiv(){
         items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsByType(account, true));
+        items = FXCollections.observableArrayList(bankModel.getTransactionsByType(account, true));
         transactionList.setItems(items);
 
     }
 
     @FXML void onlyNegativ(){
         items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsByType(account, false));
+        items = FXCollections.observableArrayList(bankModel.getTransactionsByType(account, false));
         transactionList.setItems(items);
     }
 
@@ -88,10 +90,14 @@ public class ViewController extends Controller {
         } catch(Exception e){e.printStackTrace();}
     }
 
-    @FXML void addTransactionDialog() {
-        AddTransactionDialog dialog = new AddTransactionDialog();
+    public void addTransaction() {
+        AddTransactionDialog dialog = new AddTransactionDialog(this);
         Optional<Transaction> result = dialog.showAndWait();
-        result.ifPresent(t -> transactionList.getItems().add(t));
+    }
+
+    public void addTransaction(Transaction t) throws Exception{
+        bankModel.addTransaction((String) stage.getUserData(), t);
+        items.add(t);
     }
 
     /**
@@ -100,7 +106,7 @@ public class ViewController extends Controller {
      * @throws Exception
      */
     public void deleteTransaction(Transaction t) throws Exception {
-        pb.removeTransaction((String) stage.getUserData(), t);
+        bankModel.removeTransaction((String) stage.getUserData(), t);
         transactionList.getItems().remove(t);
         updateBalance();
     }
@@ -110,12 +116,6 @@ public class ViewController extends Controller {
      */
     @Override
     public void updateBalance(){
-        balance.setText(String.format("%.2f", pb.getAccountBalance(account)) + " €");
-    }
-
-    public void refreshList(){
-        items = FXCollections.observableArrayList(pb.getTransactions(account));
-        transactionList.setItems(items);
-        updateBalance();
+        balance.setText(String.format("%.2f", bankModel.getAccountBalance(account)) + " €");
     }
 }

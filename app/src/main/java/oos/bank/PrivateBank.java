@@ -296,8 +296,10 @@ public class PrivateBank implements Bank {
     @Override
     public double getAccountBalance(String account) {
         double sum = 0;
-        for(Transaction t : accountsToTransactions.get(account)){
-            sum += t.calculate();
+        if(accountsToTransactions.containsKey(account)) {
+            for (Transaction t : accountsToTransactions.get(account)) {
+                sum += t.calculate();
+            }
         }
         return sum;
     }
