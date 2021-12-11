@@ -5,8 +5,6 @@
 
 package oos.bank.gui.controller;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,7 +15,6 @@ import oos.bank.gui.dialog.AddTransactionDialog;
 import oos.bank.transactions.Transaction;
 
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ViewController extends Controller {
@@ -92,7 +89,7 @@ public class ViewController extends Controller {
 
     public void addTransaction() {
         AddTransactionDialog dialog = new AddTransactionDialog(this);
-        Optional<Transaction> result = dialog.showAndWait();
+        dialog.showAndWait();
     }
 
     public void addTransaction(Transaction t) throws Exception{

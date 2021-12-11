@@ -18,7 +18,6 @@ public class AddTransactionDialog extends Dialog<Transaction> {
         final DialogPane pane = getDialogPane();
         setTitle("Transaction Dialog");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/transaction.fxml"));
-        //TransactionController controller = loader.getController();
         try {
             pane.setContent(loader.load());
         } catch(Exception e){ e.printStackTrace();}

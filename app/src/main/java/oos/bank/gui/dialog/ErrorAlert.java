@@ -12,8 +12,6 @@ public class ErrorAlert extends Alert {
         super(Alert.AlertType.ERROR, contentText);
         setTitle("Error");
         setHeaderText("Error occured !");
-    }
-    public void display(){
         showAndWait();
     }
 }

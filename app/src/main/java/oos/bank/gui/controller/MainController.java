@@ -8,12 +8,10 @@ package oos.bank.gui.controller;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import oos.bank.gui.cellfactory.AccountCellFactory;
 import oos.bank.gui.dialog.AddAccountDialog;
 import oos.bank.gui.dialog.ErrorAlert;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -56,7 +54,6 @@ public class MainController extends Controller {
                 bankModel.createAccount(account);
             } catch(Exception e){
                 ErrorAlert alert = new ErrorAlert(e.getLocalizedMessage());
-                alert.display();
             }
         });
         listView.setItems(FXCollections.observableArrayList(bankModel.getAllAccounts()));
@@ -80,7 +77,6 @@ public class MainController extends Controller {
                     bankModel.deleteAccount(account);
             } catch (Exception e) {
                 ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
-                errorAlert.display();
             }
             listView.getItems().clear();
         }

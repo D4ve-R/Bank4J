@@ -36,8 +36,7 @@ public class TransactionCellFactory extends ListCell<Transaction> {
                 try {
                     controller.deleteTransaction(this.getItem());
                 } catch (Exception e) {
-                    ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
-                    errorAlert.display();
+                    new ErrorAlert(e.getLocalizedMessage());
                 }
             }
         });

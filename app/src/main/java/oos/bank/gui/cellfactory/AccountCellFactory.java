@@ -40,8 +40,7 @@ public class AccountCellFactory extends ListCell<String> {
                 try {
                     controller.deleteAccount(this.getItem());
                 } catch (Exception e) {
-                    ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
-                    errorAlert.display();
+                    new ErrorAlert(e.getLocalizedMessage());
                 }
             }
         });
