@@ -9,9 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import oos.bank.gui.cellfactory.AccountCellFactory;
 import oos.bank.gui.dialog.AddAccountDialog;
 import oos.bank.gui.dialog.ErrorAlert;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -72,45 +74,12 @@ public class MainController extends Controller {
      */
     public void showAccounts(){
         listView.setItems(FXCollections.observableArrayList(pb.getAllAccounts()));
-        listView.setCellFactory(factory -> {
-            ListCell<String> cell = new ListCell<>();
-            cell.textProperty().bind(cell.itemProperty());
+        listView.setCellFactory(factory -> new AccountCellFactory(this));
+    }
 
-            MenuItem viewItem = new MenuItem("View");
-            viewItem.setOnAction(event -> {
-                Stage stage = (Stage) cell.getScene().getWindow();
-                stage.setUserData(cell.getItem());
-                try {
-                    switchScene("/view.fxml");
-                }catch (Exception e){e.printStackTrace();}
-            });
-
-            MenuItem deleteItem = new MenuItem("Delete");
-            deleteItem.setOnAction(event -> {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Deleting Account: " + cell.getItem() + " ?");
-                alert.setTitle("Delete");
-                Optional<ButtonType> result = alert.showAndWait();
-                if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
-                    try {
-                        pb.deleteAccount(cell.getItem());
-                        listView.getItems().remove(cell.getItem());
-                        updateBalance();
-                    } catch (Exception e) {
-                        ErrorAlert errorAlert = new ErrorAlert(e.getLocalizedMessage());
-                        errorAlert.display();
-                    }
-                }
-            });
-
-            ContextMenu contextMenu = new ContextMenu(viewItem, deleteItem);
-            cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
-                if (isNowEmpty) {
-                    cell.setContextMenu(null);
-                } else {
-                    cell.setContextMenu(contextMenu);
-                }
-            });
-            return cell;
-        });
+    public void deleteAccount(String account) throws Exception {
+        pb.deleteAccount(account);
+        listView.getItems().remove(account);
+        updateBalance();
     }
 }

@@ -41,4 +41,9 @@ public class OutgoingTransfer extends Transfer {
         return (-1 * super.calculate());
     }
 
+    @Override
+    public String toString(){
+        return "OutgoingTransfer: " + super.toString();
+    }
+
 }

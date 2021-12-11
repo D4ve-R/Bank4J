@@ -92,7 +92,7 @@ public class Transfer extends Transaction implements CalculateBill {
      */
     @Override
     public String toString(){
-        return "Transfer: { \n" + super.toString() + " Sender: " + sender + "\n" + " Recipient: " + recipient + "\n}\n";
+        return "{ \n" + super.toString() + " Sender: " + sender + "\n" + " Recipient: " + recipient + "\n}\n";
     }
 
     /**

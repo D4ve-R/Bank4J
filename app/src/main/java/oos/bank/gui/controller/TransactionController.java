@@ -10,10 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import oos.bank.gui.dialog.ErrorAlert;
-import oos.bank.transactions.IncomingTransfer;
-import oos.bank.transactions.OutgoingTransfer;
-import oos.bank.transactions.Payment;
-import oos.bank.transactions.Transfer;
+import oos.bank.transactions.*;
 
 /**
  * handles creation of a new transaction through AddTransactionDialog
@@ -37,24 +34,24 @@ public class TransactionController extends Controller {
         stageCtrl.close();
     }
 
-    public void addTransaction(){
+    public void add(){
         double amnt = Double.parseDouble(amount.getText());
         String dt = date.getText();
         String descrp = description.getText();
-        System.out.println(amnt);
         try {
             if(payment.isSelected()) {
                 Payment pay = new Payment(dt, amnt, descrp);
                 pb.addTransaction((String) stage.getUserData(), pay);
             }
             else if(transfer.isSelected()){
-                Transfer trans = null;
-                if(amnt < 0)
-                    trans = new OutgoingTransfer(dt, amnt, descrp, sender.getText(), recipient.getText());
-                else
-                    trans = new IncomingTransfer(dt, amnt, descrp, sender.getText(), recipient.getText());
-
-                pb.addTransaction((String) stage.getUserData(), trans);
+                if(amnt < 0) {
+                    OutgoingTransfer trans = new OutgoingTransfer(dt, amnt, descrp, sender.getText(), recipient.getText());
+                    pb.addTransaction((String) stage.getUserData(), trans);
+                }
+                else {
+                    IncomingTransfer trans = new IncomingTransfer(dt, amnt, descrp, sender.getText(), recipient.getText());
+                    pb.addTransaction((String) stage.getUserData(), trans);
+                }
             }
         }catch(Exception e){
             e.printStackTrace();

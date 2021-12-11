@@ -6,26 +6,22 @@
 package oos.bank.gui.dialog;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Modality;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 import oos.bank.gui.controller.TransactionController;
+import oos.bank.transactions.Transaction;
 
-import java.io.IOException;
-
-public class AddTransactionDialog {
-    public void display() throws IOException {
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
+public class AddTransactionDialog extends Dialog<Transaction> {
+    public AddTransactionDialog(){
+        final DialogPane pane = getDialogPane();
+        setTitle("Transaction Dialog");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/transaction.fxml"));
-        Parent root = loader.load();
+        try {
+            pane.setContent(loader.load());
+        } catch(Exception e){ e.printStackTrace();}
+
         TransactionController controller = loader.getController();
-        controller.setStage(stage);
-        Scene scene = new Scene(root);
-        stage.setTitle("Transaction Dialog");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
+        controller.setStage((Stage) pane.getScene().getWindow());
     }
 }

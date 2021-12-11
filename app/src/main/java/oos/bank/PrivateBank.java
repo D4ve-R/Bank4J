@@ -220,7 +220,6 @@ public class PrivateBank implements Bank {
             accountsToTransactions.put(account, transactions);
             writeAccounts(account);
         }
-
     }
 
     /**
@@ -233,8 +232,8 @@ public class PrivateBank implements Bank {
     @Override
     public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
         if(accountsToTransactions.containsKey(account)) {
-            accountsToTransactions.remove(account);
             writeAccounts(account);
+            accountsToTransactions.remove(account);
             Files.deleteIfExists(Paths.get(System.getProperty("user.home") + File.separator + directoryName + File.separator + "Konto" + account + ".json"));
         }
         else
@@ -269,12 +268,13 @@ public class PrivateBank implements Bank {
             throw new AccountDoesNotExistException(account);
         }
         else {
-            List list = accountsToTransactions.get(account);
+            List<Transaction> list = new ArrayList<>(accountsToTransactions.get(account));
             if (!list.contains(transaction)) {
                 throw new TransactionDoesNotExistException(transaction);
             }
             else {
                 list.remove(transaction);
+                accountsToTransactions.put(account, list);
                 writeAccounts(account);
             }
         }

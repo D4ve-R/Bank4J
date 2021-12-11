@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import oos.bank.PrivateBank;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +53,7 @@ public class Controller implements Initializable {
      * @param pathFxmlFile path to fxml file
      * @throws IOException
      */
-    public void switchScene(String pathFxmlFile) throws IOException {
+    public void switchScene(@Nonnull String pathFxmlFile) throws IOException {
         root = FXMLLoader.load(getClass().getResource(pathFxmlFile));
         scene = new Scene(root);
         stage.setScene(scene);

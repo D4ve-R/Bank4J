@@ -64,7 +64,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Edit">
           <items>
-            <MenuItem mnemonicParsing="false" onAction="#addTransaction" text="Add Transaction" />
+            <MenuItem mnemonicParsing="false" onAction="#addTransactionDialog" text="Add Transaction" />
             <MenuItem mnemonicParsing="false" text="Redo" />
           </items>
         </Menu>
@@ -115,7 +115,7 @@
                                     </SplitMenuButton>
                                        <ButtonBar prefHeight="40.0" prefWidth="357.0">
                                          <buttons>
-                                           <Button fx:id="addTransactionBtn" mnemonicParsing="false" onAction="#addTransaction" text="Add" />
+                                           <Button fx:id="addTransactionBtn" mnemonicParsing="false" onAction="#addTransactionDialog" text="Add" />
                                          </buttons>
                                        </ButtonBar>
                                     </children>

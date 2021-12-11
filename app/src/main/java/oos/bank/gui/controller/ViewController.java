@@ -10,70 +10,23 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import oos.bank.gui.cellfactory.TransactionCellFactory;
 import oos.bank.gui.dialog.AddTransactionDialog;
 import oos.bank.transactions.Transaction;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ViewController extends Controller {
     private String account;
-    private ObservableList<Transaction> items;
+    private static ObservableList<Transaction> items;
     @FXML Label accountName;
     @FXML Label balance;
-    @FXML Label transaction;
+    @FXML static Label transaction;
     @FXML ListView<Transaction> transactionList;
-
-    @FXML void sortAsc(){
-        items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsSorted(account, true));
-        transactionList.setItems(items);
-    }
-
-    @FXML void sortDesc(){
-        items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsSorted(account, false));
-        transactionList.setItems(items);
-    }
-
-    @FXML void onlyPositiv(){
-        items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsByType(account, true));
-        transactionList.setItems(items);
-    }
-
-    @FXML void onlyNegativ(){
-        items.clear();
-        items = FXCollections.observableArrayList(pb.getTransactionsByType(account, false));
-        transactionList.setItems(items);
-    }
-
-    @FXML void backToMain(){
-        try {
-            switchScene("/main.fxml");
-        } catch(Exception e){e.printStackTrace();}
-    }
-
-    @FXML void addTransaction() throws IOException {
-        AddTransactionDialog dialog = new AddTransactionDialog();
-        dialog.display();
-        System.out.println("blabla");
-        items.clear();
-        items = FXCollections.observableArrayList(new ArrayList<>(pb.getTransactions(account)));
-        transactionList.setItems(items);
-        updateBalance();
-    }
-
-    /**
-     * updates balance to the account's balance
-     */
-    @Override
-    public void updateBalance(){
-        balance.setText(String.format("%.2f", pb.getAccountBalance(account)) + " €");
-    }
-
 
     /**
      * Called to initialize a controller after its root element has been
@@ -93,5 +46,68 @@ public class ViewController extends Controller {
         updateBalance();
         items = FXCollections.observableArrayList(pb.getTransactions(account));
         transactionList.setItems(items);
+        transactionList.setCellFactory(transaction -> new TransactionCellFactory());
+    }
+
+    public void setViewArea(Transaction t){
+        transaction.setText(t.toString());
+    }
+
+    @FXML void sortAsc(){
+        items.clear();
+        items = FXCollections.observableArrayList(pb.getTransactionsSorted(account, true));
+        transactionList.setItems(items);
+
+    }
+
+    @FXML void sortDesc(){
+        items.clear();
+        items = FXCollections.observableArrayList(pb.getTransactionsSorted(account, false));
+        transactionList.setItems(items);
+
+    }
+
+    @FXML void onlyPositiv(){
+        items.clear();
+        items = FXCollections.observableArrayList(pb.getTransactionsByType(account, true));
+        transactionList.setItems(items);
+
+    }
+
+    @FXML void onlyNegativ(){
+        items.clear();
+        items = FXCollections.observableArrayList(pb.getTransactionsByType(account, false));
+        transactionList.setItems(items);
+    }
+
+    @FXML void backToMain(){
+        try {
+            switchScene("/main.fxml");
+        } catch(Exception e){e.printStackTrace();}
+    }
+
+    @FXML void addTransactionDialog() {
+        AddTransactionDialog dialog = new AddTransactionDialog();
+        Optional<Transaction> result = dialog.showAndWait();
+        result.ifPresent(t -> transactionList.getItems().add(t));
+    }
+
+    public void deleteTransaction(Transaction t) throws Exception {
+        pb.removeTransaction((String) stage.getUserData(), t);
+        updateBalance();
+    }
+
+    /**
+     * updates balance to the account's balance
+     */
+    @Override
+    public void updateBalance(){
+        balance.setText(String.format("%.2f", pb.getAccountBalance(account)) + " €");
+    }
+
+    public void refreshList(){
+        items = FXCollections.observableArrayList(pb.getTransactions(account));
+        transactionList.setItems(items);
+        updateBalance();
     }
 }
