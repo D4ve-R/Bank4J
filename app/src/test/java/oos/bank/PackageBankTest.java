@@ -1,7 +1,14 @@
 package oos.bank;
 
+import oos.bank.exceptions.AccountAlreadyExistsException;
+import oos.bank.exceptions.AccountDoesNotExistException;
+import oos.bank.exceptions.TransactionAlreadyExistException;
+import oos.bank.exceptions.TransactionDoesNotExistException;
 import oos.bank.transactions.*;
 import org.junit.jupiter.api.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -158,6 +165,7 @@ class PackageBankTest {
     }
 
     @Nested
+    @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class PrivateBankTest {
         PrivateBank pb1;
         private final String dirName = "BankManagerTest";
@@ -213,8 +221,8 @@ class PackageBankTest {
         @Test
         @Order(4)
         void containsTransaction() {
+            assertFalse(pb1.containsTransaction(accountName, tr));
             try {
-                assertFalse(pb1.containsTransaction(accountName, tr));
                 pb1.addTransaction(accountName, tr);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -225,88 +233,40 @@ class PackageBankTest {
         @Test
         @Order(5)
         void getAccountBalance() {
-            //assertEquals(10.5, pb1.getAccountBalance(accountName));
-        }
-    }
-
-
-
-/*
-        @Nested
-        class BankAccountTest {
-
-            @BeforeEach
-            void setUp(){
-                try {
-                    pb1.createAccount(accountName);
-                }catch(Exception e) { e.printStackTrace();}
-            }
-
-            @AfterEach
-            void tearDown(){
-                try {
-                    pb1.deleteAccount(accountName);
-                }catch(Exception e){ e.printStackTrace();}
-            }
-
-
-            @Test
-            @Order(1)
-            void addTransaction() {
-                try {
-                    pb1.addTransaction(accountName, tr);
-                    //assertEquals(1, pb1.countCustomers());
-                    assertTrue(pb1.containsTransaction(accountName, tr));
-                    pb1.removeTransaction(accountName, tr);
-                }catch(Exception e){ e.printStackTrace();}
-
-            }
-
-            @Test
-            @Order(2)
-            void removeTransaction() {
-                try {
-                    pb1.addTransaction(accountName, tr);
-                    pb1.removeTransaction(accountName, tr);
-                    assertFalse(pb1.containsTransaction(accountName, tr));
-                } catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-
-            @Test
-            @Order(3)
-            void containsTransaction() {
-                Transaction trNotAdded = new Transfer("02.02.02", 10.9, "test transfer2", "dave", "someone");
-                try {
-                    pb1.addTransaction(accountName, tr);
-                    assertTrue(pb1.containsTransaction(accountName,tr));
-                    assertFalse(pb1.containsTransaction(accountName,trNotAdded));
-                    pb1.removeTransaction(accountName, tr);
-                } catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-
-            @Test
-            void getAccountBalance() {
-            }
-
-            @Test
-            void getTransactions() {
-            }
-
-            @Test
-            void getTransactionsSorted() {
-            }
-
-            @Test
-            void getTransactionsByType() {
-            }
-
+            assertEquals(10.5, pb1.getAccountBalance(accountName));
         }
 
-    }
+        @Test
+        @Order(6)
+        void getTransactions() {
+            List<Transaction> list = new ArrayList<>();
+            list.add(tr);
+            assertEquals(list, pb1.getTransactions(accountName));
+        }
 
- */
+        @Test
+        @Order(7)
+        void getTransactionsSorted() {
+        }
+
+        @Test
+        @Order(8)
+        void getTransactionsByType() {
+        }
+
+        @Test
+        @Order(9)
+        void testAccountExceptions(){
+            assertThrows(AccountAlreadyExistsException.class , () -> pb1.createAccount(accountName));
+            assertThrows(AccountDoesNotExistException.class, () -> pb1.deleteAccount("dfkjghfdjk"));
+        }
+
+        @Test
+        @Order(10)
+        void testTransactionExceptions(){
+            Transaction t = new Transfer("34", 45, "df", "dsf", "df");
+            assertThrows(TransactionAlreadyExistException.class, () -> pb1.addTransaction(accountName, tr));
+            assertThrows(TransactionDoesNotExistException.class, () -> pb1.removeTransaction(accountName, t));
+        }
+    }
 }
