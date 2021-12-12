@@ -1,13 +1,7 @@
 package oos.bank;
 
-import oos.bank.transactions.IncomingTransfer;
-import oos.bank.transactions.OutgoingTransfer;
-import oos.bank.transactions.Payment;
-import oos.bank.transactions.Transfer;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import oos.bank.transactions.*;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,10 +58,10 @@ class PackageBankTest {
         @Test
         void testToString() {
             assertAll("calculate() Payment",
-                    ()-> assertEquals("Payment: { \nDate: " + p.getDate() + "\nAmount: " + p.calculate() + "\nDescription: "
+                    ()-> assertEquals("Payment: { \nDate: " + p.getDate() + "\nAmount: " + String.format("%.2f", p.calculate(true)) + " €\nDescription: "
                             + p.getDescription() + "\n IncomingInterest: " + p.getIncomingInterest() + "\n OutgoingInterest: "
                             + p.getOutgoingInterest() + "\n}\n", p.toString()),
-                    ()-> assertEquals("Payment: { \nDate: " + p2.getDate() + "\nAmount: " + p2.calculate() + "\nDescription: "
+                    ()-> assertEquals("Payment: { \nDate: " + p2.getDate() + "\nAmount: " + String.format("%.2f", p2.calculate(true)) + " €\nDescription: "
                             + p2.getDescription() + "\n IncomingInterest: " + p2.getIncomingInterest() + "\n OutgoingInterest: "
                             + p2.getOutgoingInterest() + "\n}\n", p2.toString())
             );
@@ -143,10 +137,10 @@ class PackageBankTest {
         @Test
         void testToString() {
             assertAll("calculate() Transfer",
-                    ()-> assertEquals("Transfer: { \nDate: " + it.getDate() + "\nAmount: " + it.calculate() + "\nDescription: "
+                    ()-> assertEquals("IncomingTransfer: { \nDate: " + it.getDate() + "\nAmount: " + String.format("%.2f", it.calculate(true)) + " €\nDescription: "
                             + it.getDescription() + "\n Sender: " + it.getSender() + "\n Recipient: "
                             + it.getRecipient() + "\n}\n", it.toString()),
-                    ()-> assertEquals("Transfer: { \nDate: " + ot.getDate() + "\nAmount: " + ot.calculate() + "\nDescription: "
+                    ()-> assertEquals("OutgoingTransfer: { \nDate: " + ot.getDate() + "\nAmount: " + String.format("%.2f", ot.calculate(true)) + " €\nDescription: "
                             + ot.getDescription() + "\n Sender: " + ot.getSender() + "\n Recipient: "
                             + ot.getRecipient() + "\n}\n", ot.toString())
             );
@@ -165,51 +159,154 @@ class PackageBankTest {
 
     @Nested
     class PrivateBankTest {
+        PrivateBank pb1;
+        private final String dirName = "BankManagerTest";
+        private final String accountName = "DaveTest";
+        private final Transaction tr = new Transfer("01.01.01", 10.5, "test transfer", "dave", "someone");
+
         @BeforeEach
         void setUp() {
-            PrivateBank pb1 = PrivateBank.getInstance();
-            pb1.setIncomingInterest(0.5);
-            pb1.setOutgoingInterest(0.5);
-        }
-
-        @AfterEach
-        void tearDown() {
+            pb1 = PrivateBank.getInstance();
+            pb1.setIncomingInterest(0.1);
+            pb1.setOutgoingInterest(0.1);
+            try {
+                pb1.setDirectoryName(dirName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Test
+        @Order(1)
         void createAccount() {
+            try {
+                pb1.createAccount(accountName);
+                assertEquals(1, pb1.countCustomers());
+                assertTrue(pb1.getAllAccounts().contains(accountName));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         @Test
-        void testCreateAccount() {
-        }
-
-        @Test
+        @Order(2)
         void addTransaction() {
+            try {
+                pb1.addTransaction(accountName, tr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            assertTrue(pb1.containsTransaction(accountName, tr));
         }
 
         @Test
+        @Order(3)
         void removeTransaction() {
+            try {
+                pb1.removeTransaction(accountName, tr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            assertFalse(pb1.containsTransaction(accountName, tr));
         }
 
         @Test
+        @Order(4)
         void containsTransaction() {
+            try {
+                assertFalse(pb1.containsTransaction(accountName, tr));
+                pb1.addTransaction(accountName, tr);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            assertTrue(pb1.containsTransaction(accountName, tr));
         }
 
         @Test
+        @Order(5)
         void getAccountBalance() {
-        }
-
-        @Test
-        void getTransactions() {
-        }
-
-        @Test
-        void getTransactionsSorted() {
-        }
-
-        @Test
-        void getTransactionsByType() {
+            //assertEquals(10.5, pb1.getAccountBalance(accountName));
         }
     }
+
+
+
+/*
+        @Nested
+        class BankAccountTest {
+
+            @BeforeEach
+            void setUp(){
+                try {
+                    pb1.createAccount(accountName);
+                }catch(Exception e) { e.printStackTrace();}
+            }
+
+            @AfterEach
+            void tearDown(){
+                try {
+                    pb1.deleteAccount(accountName);
+                }catch(Exception e){ e.printStackTrace();}
+            }
+
+
+            @Test
+            @Order(1)
+            void addTransaction() {
+                try {
+                    pb1.addTransaction(accountName, tr);
+                    //assertEquals(1, pb1.countCustomers());
+                    assertTrue(pb1.containsTransaction(accountName, tr));
+                    pb1.removeTransaction(accountName, tr);
+                }catch(Exception e){ e.printStackTrace();}
+
+            }
+
+            @Test
+            @Order(2)
+            void removeTransaction() {
+                try {
+                    pb1.addTransaction(accountName, tr);
+                    pb1.removeTransaction(accountName, tr);
+                    assertFalse(pb1.containsTransaction(accountName, tr));
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Test
+            @Order(3)
+            void containsTransaction() {
+                Transaction trNotAdded = new Transfer("02.02.02", 10.9, "test transfer2", "dave", "someone");
+                try {
+                    pb1.addTransaction(accountName, tr);
+                    assertTrue(pb1.containsTransaction(accountName,tr));
+                    assertFalse(pb1.containsTransaction(accountName,trNotAdded));
+                    pb1.removeTransaction(accountName, tr);
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Test
+            void getAccountBalance() {
+            }
+
+            @Test
+            void getTransactions() {
+            }
+
+            @Test
+            void getTransactionsSorted() {
+            }
+
+            @Test
+            void getTransactionsByType() {
+            }
+
+        }
+
+    }
+
+ */
 }

@@ -118,10 +118,15 @@ public class PrivateBank implements Bank {
 
     /**
      * Sets the name of the current dir
+     * clears hashmap accountToTransactions on invocation
      * @param name of dir
      */
-    public void setDirectoryName(String name){
+    public void setDirectoryName(String name) throws IOException {
+        if(!name.equals(directoryName))
+            accountsToTransactions.clear();
+
         directoryName = name;
+        readAccounts();
     }
 
     /**
@@ -290,6 +295,8 @@ public class PrivateBank implements Bank {
 
     @Override
     public boolean containsTransaction(String account, Transaction transaction) {
+        if(accountsToTransactions.get(account) == null)
+            return false;
         return accountsToTransactions.get(account).contains(transaction);
     }
 
