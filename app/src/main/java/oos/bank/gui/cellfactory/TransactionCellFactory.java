@@ -51,16 +51,7 @@ public class TransactionCellFactory extends ListCell<Transaction> {
         else{
             setText(t.toString());
             setGraphic(null);
+            setContextMenu(contextMenu);
         }
-
-
-        emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
-            if (isNowEmpty) {
-                setText(null);
-                setContextMenu(null);
-            } else {
-                setContextMenu(contextMenu);
-            }
-        });
     }
 }
