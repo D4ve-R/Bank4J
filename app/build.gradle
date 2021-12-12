@@ -26,6 +26,9 @@ dependencies {
 
     // Gson convert java objects to json
     implementation 'com.google.code.gson:gson:2.8.9'
+
+    // Apache Commons IO
+    implementation 'commons-io:commons-io:2.11.0'
 }
 
 application {

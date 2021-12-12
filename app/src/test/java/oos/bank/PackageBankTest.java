@@ -5,8 +5,10 @@ import oos.bank.exceptions.AccountDoesNotExistException;
 import oos.bank.exceptions.TransactionAlreadyExistException;
 import oos.bank.exceptions.TransactionDoesNotExistException;
 import oos.bank.transactions.*;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,7 +170,7 @@ class PackageBankTest {
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class PrivateBankTest {
         PrivateBank pb1;
-        private final String dirName = "BankManagerTest";
+        private final static String dirName = "BankManagerTest";
         private final String accountName = "DaveTest";
         private final Transaction tr = new Transfer("01.01.01", 10.5, "test transfer", "dave", "someone");
 
@@ -264,9 +266,26 @@ class PackageBankTest {
         @Test
         @Order(10)
         void testTransactionExceptions(){
-            Transaction t = new Transfer("34", 45, "df", "dsf", "df");
+            Transaction t2 = new Transfer("34", 45, "df", "dsf", "df");
             assertThrows(TransactionAlreadyExistException.class, () -> pb1.addTransaction(accountName, tr));
-            assertThrows(TransactionDoesNotExistException.class, () -> pb1.removeTransaction(accountName, t));
+            assertThrows(TransactionDoesNotExistException.class, () -> pb1.removeTransaction(accountName, t2));
+        }
+
+        @Test
+        @Order(11)
+        void deleteAccount(){
+            try{
+                pb1.deleteAccount(accountName);
+            }catch(Exception e){ e.printStackTrace(); }
+            assertFalse(pb1.getAllAccounts().contains(accountName));
+        }
+
+        @AfterAll
+        static void deleteTestDir(){
+            try {
+                FileUtils.deleteDirectory(new File(System.getProperty("user.home") + File.separator + dirName));
+            } catch(Exception e) { e.printStackTrace(); }
+
         }
     }
 }
