@@ -12,6 +12,7 @@
     <orderEntry type="module" module-name="OOS.app.main" />
     <orderEntry type="library" name="Gradle: com.google.guava:guava:30.1.1-jre" level="project" />
     <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.9" level="project" />
+    <orderEntry type="library" name="Gradle: commons-io:commons-io:2.11.0" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:mac:17" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:17" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:mac:17" level="project" />
@@ -33,7 +34,6 @@
     <orderEntry type="library" name="Gradle: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.7.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.7.2" level="project" />
-    <orderEntry type="library" name="commons-io-2.11.0" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="OOS.app.main" />
 </module>

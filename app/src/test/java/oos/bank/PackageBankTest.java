@@ -191,11 +191,11 @@ class PackageBankTest {
         void createAccount() {
             try {
                 pb1.createAccount(accountName);
-                assertEquals(1, pb1.countCustomers());
-                assertTrue(pb1.getAllAccounts().contains(accountName));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            assertEquals(1, pb1.countCustomers());
+            assertTrue(pb1.getAllAccounts().contains(accountName));
         }
 
         @Test
@@ -206,7 +206,7 @@ class PackageBankTest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            assertTrue(pb1.containsTransaction(accountName, tr));
+            assertTrue(pb1.getTransactions(accountName).contains(tr));
         }
 
         @Test
@@ -217,7 +217,7 @@ class PackageBankTest {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            assertFalse(pb1.containsTransaction(accountName, tr));
+            assertFalse(pb1.getTransactions(accountName).contains(tr));
         }
 
         @Test
@@ -249,11 +249,27 @@ class PackageBankTest {
         @Test
         @Order(7)
         void getTransactionsSorted() {
+            Transaction t3 = new Transfer("02.02.02", 50, "bla", "me", "you");
+            List<Transaction> list = new ArrayList<>();
+            list.add(tr);
+            list.add(t3);
+            try {
+                pb1.addTransaction(accountName, t3);
+            } catch(Exception e ){e.printStackTrace();}
+            assertEquals(list, pb1.getTransactionsSorted(accountName, true));
+            assertNotEquals(list, pb1.getTransactionsSorted(accountName, false));
         }
 
         @Test
         @Order(8)
         void getTransactionsByType() {
+            Transaction t3 = new Transfer("02.02.02", 50, "bla", accountName, "you");
+            List<Transaction> list = new ArrayList<>();
+            list.add(t3);
+            try {
+                pb1.addTransaction(accountName, t3);
+            } catch(Exception e) {e.printStackTrace();}
+            //assertEquals(list, pb1.getTransactionsByType(accountName, false));
         }
 
         @Test
