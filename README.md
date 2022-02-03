@@ -1,2 +1,3 @@
 # OOS
-Objektorientierte Software-Entwicklung
+Objektorientierte Software-Entwicklung in Java.
+OOS WS21/22
