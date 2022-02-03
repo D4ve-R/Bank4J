@@ -74,7 +74,7 @@ public class PrivateBank implements Bank {
      * setName sets the name attr of Bank Obj
      * @param name
      */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) { PrivateBank.name = name; }
 
     /**
      * getIncomingInterest returns the incomingInterest attr of Bank obj
